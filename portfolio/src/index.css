@@ -3,6 +3,32 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Set background on html to cover entire scrollable area */
+    @apply bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50;
+    min-height: 100%;
+    height: 100%;
+    /* Ensure background covers overscroll areas */
+    overflow-x: hidden;
+    position: relative;
+    /* Prevent white bars on overscroll */
+    overscroll-behavior: none;
+  }
+
+  html::before {
+    content: '';
+    position: fixed;
+    top: -200vh;
+    left: 0;
+    right: 0;
+    bottom: -200vh;
+    @apply bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50;
+    z-index: -1;
+    pointer-events: none;
+    background-attachment: fixed;
+  }
+
   body {
     @apply bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-900;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,44 +37,131 @@
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    position: relative;
+    /* Hide scrollbar but keep scrolling */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    /* Prevent white bars on overscroll */
+    overscroll-behavior: none;
+  }
+
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 
   /* Blue theme (default) */
+  html.dark[data-theme="blue"] {
+    @apply bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800;
+  }
+
+  html.dark[data-theme="blue"]::before {
+    @apply bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800;
+    background-attachment: fixed;
+  }
+
   html.dark[data-theme="blue"] body {
     @apply bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800 text-slate-100;
   }
 
   /* Purple theme */
+  html.dark[data-theme="purple"] {
+    @apply bg-gradient-to-br from-slate-900 via-purple-950 to-slate-800;
+  }
+
+  html.dark[data-theme="purple"]::before {
+    @apply bg-gradient-to-br from-slate-900 via-purple-950 to-slate-800;
+    background-attachment: fixed;
+  }
+
   html.dark[data-theme="purple"] body {
     @apply bg-gradient-to-br from-slate-900 via-purple-950 to-slate-800 text-slate-100;
   }
 
   /* Green theme */
+  html.dark[data-theme="green"] {
+    @apply bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-800;
+  }
+
+  html.dark[data-theme="green"]::before {
+    @apply bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-800;
+    background-attachment: fixed;
+  }
+
   html.dark[data-theme="green"] body {
     @apply bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-800 text-slate-100;
   }
 
   /* Orange theme */
+  html.dark[data-theme="orange"] {
+    @apply bg-gradient-to-br from-slate-900 via-orange-950 to-slate-800;
+  }
+
+  html.dark[data-theme="orange"]::before {
+    @apply bg-gradient-to-br from-slate-900 via-orange-950 to-slate-800;
+    background-attachment: fixed;
+  }
+
   html.dark[data-theme="orange"] body {
     @apply bg-gradient-to-br from-slate-900 via-orange-950 to-slate-800 text-slate-100;
   }
 
   /* Pink theme */
+  html.dark[data-theme="pink"] {
+    @apply bg-gradient-to-br from-slate-900 via-pink-950 to-slate-800;
+  }
+
+  html.dark[data-theme="pink"]::before {
+    @apply bg-gradient-to-br from-slate-900 via-pink-950 to-slate-800;
+    background-attachment: fixed;
+  }
+
   html.dark[data-theme="pink"] body {
     @apply bg-gradient-to-br from-slate-900 via-pink-950 to-slate-800 text-slate-100;
   }
 
   /* Cyan theme */
+  html.dark[data-theme="cyan"] {
+    @apply bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-800;
+  }
+
+  html.dark[data-theme="cyan"]::before {
+    @apply bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-800;
+    background-attachment: fixed;
+  }
+
   html.dark[data-theme="cyan"] body {
     @apply bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-800 text-slate-100;
   }
 
-  html {
-    scroll-behavior: smooth;
-  }
-
   #root {
     min-height: 100vh;
+    /* Ensure root also has background to prevent white bars */
+    @apply bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50;
+  }
+
+  html.dark #root {
+    @apply bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800;
+  }
+
+  html.dark[data-theme="purple"] #root {
+    @apply bg-gradient-to-br from-slate-900 via-purple-950 to-slate-800;
+  }
+
+  html.dark[data-theme="green"] #root {
+    @apply bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-800;
+  }
+
+  html.dark[data-theme="orange"] #root {
+    @apply bg-gradient-to-br from-slate-900 via-orange-950 to-slate-800;
+  }
+
+  html.dark[data-theme="pink"] #root {
+    @apply bg-gradient-to-br from-slate-900 via-pink-950 to-slate-800;
+  }
+
+  html.dark[data-theme="cyan"] #root {
+    @apply bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-800;
   }
 }
 
