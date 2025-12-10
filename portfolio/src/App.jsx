@@ -37,7 +37,7 @@ const softSkills = [
   },
   {
     name: 'Teamwork',
-    description: { sk: 'Spoluzakladal som startup so spolužiakmi; spolupracoval som na stážach a crowdfunding', en: 'Co-founded a startup with classmates; collaborated on internships and crowdfunding' }
+    description: { sk: 'Spoluzakladal som startup so spolužiakmi; spolupracoval som na stážach a crowdfundingových projektoch', en: 'Co-founded a startup with classmates; collaborated on internships and crowdfunding' }
   },
   {
     name: 'Time Management',
@@ -45,7 +45,7 @@ const softSkills = [
   },
   {
     name: 'Discipline',
-    description: { sk: 'Trénoval som ako plavec viac ako 10 rokov počas štúdia', en: 'Trained as a swimmer for over 10 years while pursuing academics' }
+    description: { sk: 'Trénoval som ako plavec viac než desať rokov počas štúdia', en: 'Trained as a swimmer for over 10 years while pursuing academics' }
   },
   {
     name: 'Problem Solving',
@@ -53,7 +53,7 @@ const softSkills = [
   },
   {
     name: 'Communication',
-    description: { sk: 'Vytvoril som prezentácie a koordinoval crowdfunding outreach', en: 'Created pitches and coordinated crowdfunding outreach' }
+    description: { sk: 'Vytvoril som prezentácie a koordinoval crowdfundingové kampane', en: 'Created pitches and coordinated crowdfunding outreach' }
   }
 ];
 
@@ -76,7 +76,7 @@ const translations = {
     },
     about: {
       title: 'O mne',
-      text1: 'Motivovaný študent strednej školy so silným záujmom o informatiku a podnikanie. Spoluzakladal som startup, absolvoval som priemyselné stáže a vybudoval som disciplínu cez viac ako 10 rokov súťažného plávania. Túžim aplikovať zručnosti v riešení problémov a týmovej práci na reálne technologické a podnikateľské výzvy.',
+      text1: 'Motivovaný študent strednej školy so silným záujmom o informatiku a podnikanie. Spoluzakladal som startup, absolvoval som priemyselné stáže a vybudoval som disciplínu cez viac než desať rokov súťažného plávania. Túžim aplikovať zručnosti v riešení problémov a tímovej práci na reálne technologické a podnikateľské výzvy.',
       text2: 'Špecializujem sa na web development, machine learning a analýzu dát. Rád sa učím nové technológie a aplikujem ich v praktických projektoch.',
       education: 'Vzdelanie',
       school: 'Lýceum C.S. Lewisa',
@@ -94,15 +94,15 @@ const translations = {
       title: 'Skúsenosti',
       slido: {
         company: 'Slido',
-        description: 'Slido je platforma pre interakciu s publikom založená v Bratislave v roku 2012, ktorá zlepšuje zapojenie počas stretnutí a eventov prostredníctvom živých ankiet, Q&A relácií a kvízov. V roku 2021 bola spoločnosť nadobudnutá spoločnosťou Cisco.',
+        description: 'Slido je platforma pre interakciu s publikom založená v Bratislave v roku 2012, ktorá zlepšuje zapojenie počas stretnutí a eventov prostredníctvom živých ankiet, Q&A relácií a kvízov. V roku 2021 spoločnosť nadobudla spoločnosť Cisco.',
         role: 'Stáž',
-        desc1: 'Aplikoval som informatické znalosti na vývoj produktových funkcií pre platformu interakcie s publikom.',
-        desc2: 'Spolupracoval som s vývojármi na zlepšení interných nástrojov na základe spätnej väzby používateľov.',
+        desc1: 'Aplikoval som informatické znalosti pri vývoji produktových funkcií pre platformu interakcie s publikom.',
+        desc2: 'Spolupracoval som s vývojármi na zlepšovaní interných nástrojov na základe spätnej väzby používateľov.',
         desc3: 'Pracoval som na funkciách pre živé ankety a Q&A relácie, ktoré zlepšujú zapojenie používateľov.'
       },
       titans: {
         company: 'Titans Freelancers',
-        description: 'Titans Freelancers je slovenská IT spoločnosť založená v roku 2013, ktorá spája IT freelancerov s podnikmi hľadajúcimi špecializované expertízy. Poskytujú flexibilné IT riešenia pre rôzne odvetvia.',
+        description: 'Titans Freelancers je slovenská IT spoločnosť založená v roku 2013, ktorá spája IT freelancerov s podnikmi hľadajúcimi špecializované expertízy. Poskytuje flexibilné IT riešenia pre rôzne odvetvia.',
         role: 'Stáž',
         desc1: 'Spolupracoval som s tímom IT špecialistov na rôznych projektoch pre klientov.',
         desc2: 'Pomáhal som pri vývoji a údržbe softvérových riešení pre externých klientov.',
@@ -112,14 +112,14 @@ const translations = {
     extracurricular: {
       title: 'Mimoškolské aktivity',
       swimming: 'Súťažný plavec',
-      swimmingDecade: 'Aktívne sa venujem súťažnému plávaniu viac ako desaťročie.',
-      swimmingDesc1: 'Vyvinul som silnú disciplínu, odolnosť a návyky stanovenia cieľov cez prísny denný tréning a súťaženie.',
-      swimmingDesc2: 'Naučil som sa zvládať tlak, udržiavať sústredenie a konzistentne podávať výkony počas dlhých období.',
+      swimmingDecade: 'Aktívne sa venujem súťažnému plávaniu viac než desaťročie.',
+      swimmingDesc1: 'Vyvinul som si silnú disciplínu, odolnosť a návyky stanovenia cieľov cez prísny denný tréning a súťaženie.',
+      swimmingDesc2: 'Naučil som sa zvládať tlak, udržiavať sústredenie a konzistentne podávať výkony počas dlhších období.',
       swimmingDesc3: 'Aplikoval som lekcie zo športu, ako je vytrvalosť a time management, na akademické a osobné projekty.'
     },
     projects: {
       title: 'Projekty',
-      description: 'Prehľad mojich najdôležitejších projektov a prác',
+      description: 'Prehľad mojich najdôležitejších projektov a práce',
       viewProject: 'Pozrieť projekt',
       categories: {
         'Web Development': 'Web Development',
@@ -144,7 +144,7 @@ const translations = {
     },
     contact: {
       title: 'Kontakt',
-      description: 'Neváhajte ma kontaktovať pre spoluprácu alebo otázky',
+      description: 'Neváhajte ma kontaktovať ohľadom spolupráce alebo otázok',
       email: 'Email',
       linkedin: 'LinkedIn',
       github: 'GitHub'

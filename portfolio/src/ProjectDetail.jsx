@@ -60,15 +60,15 @@ const projectsDataBase = [
     id: 'quizme',
     title: { sk: 'QuizMe AI', en: 'QuizMe AI' },
     description: { 
-      sk: 'AI-powered aplikácia na vytváranie kvízov zo študijných materiálov. Nahráš PDF alebo text a AI vygeneruje personalizované kvízy.',
+      sk: 'Aplikácia s umelou inteligenciou na vytváranie kvízov zo študijných materiálov. Nahráš PDF alebo text a AI vygeneruje personalizované kvízy.',
       en: 'AI-powered application for creating quizzes from study materials. Upload PDFs or text and AI generates personalized quizzes.'
     },
     detailedDescription: {
       sk: `QuizMe AI je webová aplikácia, ktorá transformuje študijné materiály na personalizované kvízy pomocou umelnej inteligencie.
 
-Aplikácia umožňuje študentom nahrávať ich študijné materiály (PDF súbory, textové dokumenty) a pomocou OpenAI API automaticky generuje kvízy s otázkami založenými na obsahu. Užívatelia si môžu vybrať počet otázok, typ otázok (multiple choice alebo true/false) a potom si kvízy uložiť a riešiť v interaktívnom režime.
+Aplikácia umožňuje študentom nahrávať svoje študijné materiály (PDF súbory, textové dokumenty) a pomocou OpenAI API automaticky generuje kvízy s otázkami založenými na obsahu. Používatelia si môžu vybrať počet otázok, typ otázok (multiple choice alebo true/false) a potom si kvízy uložiť a riešiť v interaktívnom režime.
 
-Projekt používa Flask backend pre API endpointy, OpenAI GPT-4 pre generovanie kvízov a PyPDF2 pre extrakciu textu z PDF súborov. Frontend je vytvorený v vanilla JavaScript s podporou Google OAuth autentifikácie a dark mode. Kvízy sú ukladané v localStorage organizované podľa užívateľa.
+Projekt používa Flask backend pre API endpointy, OpenAI GPT-4 pre generovanie kvízov a PyPDF2 pre extrakciu textu z PDF súborov. Frontend je vytvorený v vanilla JavaScript s podporou Google OAuth autentifikácie a dark mode. Kvízy sú ukladané v localStorage a organizované podľa používateľa.
 
 Aplikácia poskytuje intuitívne používateľské rozhranie pre nahrávanie súborov, generovanie kvízov a ich riešenie s okamžitou spätnou väzbou. Dashboard umožňuje správu všetkých vytvorených kvízov.`,
       en: `QuizMe AI is a web application that transforms study materials into personalized quizzes using artificial intelligence.
@@ -85,12 +85,12 @@ The application provides an intuitive user interface for file uploads, quiz gene
     repositoryLink: 'https://github.com/simon07426/QuizMe---portfolio',
     features: {
       sk: [
-        'AI-powered generovanie kvízov z PDF a textových súborov',
+        'Generovanie kvízov pomocou AI z PDF a textových súborov',
         'Interaktívny režim na riešenie kvízov',
         'Dashboard na správu kvízov',
         'Google OAuth autentifikácia',
-        'Dark mode podpora',
-        'Multiple choice a True/False otázky'
+        'Podpora dark mode',
+        'Otázky typu multiple choice a True/False'
       ],
       en: [
         'AI-powered quiz generation from PDF and text files',
@@ -105,7 +105,7 @@ The application provides an intuitive user interface for file uploads, quiz gene
       sk: [
         'Integrácia OpenAI API a formátovanie promptov',
         'Extrakcia textu z PDF súborov s rôznymi formátmi',
-        'Vytvorenie intuitívneho UI bez frameworku',
+        'Vytvorenie intuitívneho používateľského rozhrania bez frameworku',
         'Správa stavu aplikácie v vanilla JavaScript',
         'Implementácia Google OAuth'
       ],
@@ -120,10 +120,10 @@ The application provides an intuitive user interface for file uploads, quiz gene
     lessons: {
       sk: [
         'Naučil som sa pracovať s OpenAI API a vytvárať efektívne prompty',
-        'Získal som skúsenosti s Flask backend development',
-        'Pochopil som PDF processing v Pythone',
+        'Získal som skúsenosti s vývojom Flask backendu',
+        'Pochopil som spracovanie PDF súborov v Pythone',
         'Naučil som sa implementovať OAuth autentifikáciu',
-        'Zlepšil som svoje zručnosti vo vanilla JavaScript'
+        'Zlepšil som svoje zručnosti v vanilla JavaScript'
       ],
       en: [
         'I learned to work with OpenAI API and create effective prompts',
@@ -139,15 +139,15 @@ The application provides an intuitive user interface for file uploads, quiz gene
     id: 'g-game',
     title: { sk: 'MonoGame', en: 'MonoGame' },
     description: { 
-      sk: 'Tímový projekt hry vytvorenej v MonoGame. Zameraný na spoluprácu, Git workflow, merge requests a rotáciu vedúcich rolí v tíme štyroch.',
+      sk: 'Tímový projekt hry vytvorenej v MonoGame. Zameraný na spoluprácu, Git workflow, merge requests a rotáciu vedúcich rolí v tíme štyroch ľudí.',
       en: 'Team project of a game created in MonoGame. Focused on collaboration, Git workflow, merge requests and rotating leadership roles in a team of four.'
     },
     detailedDescription: {
-      sk: `G-Game je tímový projekt hry vytvorenej v MonoGame, na ktorom som pracoval v tíme štyroch ľudí. Tento projekt bol pre mňa skvelou príležitosťou naučiť sa efektívne spolupracovať v tíme a zvládnuť Git workflow v reálnom prostredí.
+      sk: `MonoGame je tímový projekt hry vytvorenej v MonoGame, na ktorom som pracoval v tíme štyroch ľudí. Tento projekt bol pre mňa skvelou príležitosťou naučiť sa efektívne spolupracovať v tíme a zvládnuť Git workflow v reálnom prostredí.
 
 Projekt bol postavený na MonoGame frameworku, čo nám umožnilo vytvoriť plnohodnotnú 2D hru s komplexnou mechanikou. Počas vývoja sme pravidelne rotovali vedúce role v tíme, čo každému z nás dalo možnosť viesť projekt a rozhodovať o architektúre a smerovaní vývoja.
 
-Kľúčovou súčasťou nášho workflow bolo používanie GitLabu pre verzovanie kódu a merge requests. Každý feature bol vyvíjaný v samostatnej vetve, následne sme vytvárali merge requests, ktoré sme spolu reviewovali pred mergovaním do hlavnej vetvy. Tento proces nás naučil dôležitosť code review, komunikácie v tíme a správneho riešenia konfliktov.
+Kľúčovou súčasťou nášho workflow bolo používanie GitLabu pre verzovanie kódu a merge requests. Každý feature bol vyvíjaný v samostatnej vetve, následne sme vytvárali merge requests, ktoré sme spolu kontrolovali pred mergovaním do hlavnej vetvy. Tento proces nás naučil dôležitosť code review, komunikácie v tíme a správneho riešenia konfliktov.
 
 Projekt využíva MonoGame pre rendering, game loop a správu vstupov. Implementovali sme rôzne herné mechaniky vrátane kolízií, animácií a stavového stroja pre herné objekty.`,
       en: `G-Game is a team project of a game created in MonoGame, which I worked on in a team of four people. This project was a great opportunity for me to learn how to collaborate effectively in a team and master Git workflow in a real environment.
@@ -167,7 +167,7 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
         'Tímová spolupráca v tíme štyroch ľudí',
         'Rotácia vedúcich rolí v tíme',
         'Git workflow s vetvami a merge requests',
-        'Code review proces',
+        'Proces code review',
         'Riešenie konfliktov v Gite',
         'Komplexné herné mechaniky v MonoGame',
         'Kolízie a animácie',
@@ -191,7 +191,7 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
         'Komunikácia a synchronizácia zmien',
         'Rozdelenie úloh a zodpovedností',
         'Udržiavanie konzistentného kódu v tíme',
-        'Zvládnutie Git workflow v týmovom prostredí',
+        'Zvládnutie Git workflow v tímovom prostredí',
         'Integrácia rôznych častí hry od rôznych členov tímu'
       ],
       en: [
@@ -207,13 +207,13 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
     lessons: {
       sk: [
         'Naučil som sa efektívne spolupracovať v tíme pomocou Git a GitLab',
-        'Získal som skúsenosti s merge requests a code review procesom',
-        'Pochopil som dôležitosť komunikácie v týmovom prostredí',
+        'Získal som skúsenosti s merge requests a procesom code review',
+        'Pochopil som dôležitosť komunikácie v tímovom prostredí',
         'Naučil som sa riešiť konflikty v Gite',
         'Získal som skúsenosti s rotáciou vedúcich rolí',
         'Zlepšil som svoje zručnosti v MonoGame a C#',
         'Naučil som sa organizovať prácu v tíme a rozdeliť úlohy',
-        'Pochopil som dôležitosť verzovania kódu a Git best practices'
+        'Pochopil som dôležitosť verzovania kódu a best practices v Gite'
       ],
       en: [
         'I learned to collaborate effectively in a team using Git and GitLab',
@@ -236,11 +236,11 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
       en: 'Chrome extension developed during internship at Titans Freelancers. Automatically extracts information from LinkedIn profiles and companies and displays data from database.'
     },
     detailedDescription: {
-      sk: `Titans LinkedIn Extension je Chrome rozšírenie, ktoré som vyvinul spolu s kamarátom počas stáže v Titans Freelancers. Projekt bol vytvorený na zlepšenie efektivity práce s LinkedIn profilmi a firmami.
+      sk: `Chrome rozšírenie je projekt, ktorý som vyvinul spolu s kamarátom počas stáže v Titans Freelancers. Projekt bol vytvorený na zlepšenie efektivity práce s LinkedIn profilmi a firmami.
 
 Rozšírenie funguje tak, že keď používateľ navštívi LinkedIn profil alebo stránku firmy, automaticky extrahuje meno alebo názov firmy z stránky. Tieto informácie sa potom odošlú na Flask backend API, ktorý vyhľadáva v databáze a vracia relevantné informácie o profile alebo firme.
 
-Rozšírenie podporuje oba typy LinkedIn stránok - osobné profily aj firemné stránky. Pre osobné profily zobrazuje informácie ako meno, pozícia, email, oddelenie a LinkedIn odkaz. Pre firemné stránky zobrazuje názov firmy, IČO, adresu, web a ďalšie firemné informácie.
+Rozšírenie podporuje oba typy LinkedIn stránok – osobné profily aj firemné stránky. Pre osobné profily zobrazuje informácie ako meno, pozícia, email, oddelenie a LinkedIn odkaz. Pre firemné stránky zobrazuje názov firmy, IČO, adresu, web a ďalšie firemné informácie.
 
 Projekt využíva Chrome Extension Manifest V3, JavaScript pre frontend logiku, Flask pre backend API a integráciu s databázou. Rozšírenie automaticky normalizuje text (odstraňuje diakritiku) pre lepšie vyhľadávanie v databáze.`,
       en: `Titans LinkedIn Extension is a Chrome extension that I developed together with a friend during an internship at Titans Freelancers. The project was created to improve efficiency when working with LinkedIn profiles and companies.
@@ -263,7 +263,7 @@ The project uses Chrome Extension Manifest V3, JavaScript for frontend logic, Fl
         'Normalizácia textu (odstránenie diakritiky)',
         'Zobrazenie detailných informácií v popup okne',
         'Chrome Extension Manifest V3',
-        'Real-time zobrazenie dát z databázy'
+        'Zobrazenie dát z databázy v reálnom čase'
       ],
       en: [
         'Automatic extraction of names and company names from LinkedIn pages',
@@ -278,11 +278,11 @@ The project uses Chrome Extension Manifest V3, JavaScript for frontend logic, Fl
     challenges: {
       sk: [
         'Extrakcia dát z LinkedIn stránok s rôznymi štruktúrami',
-        'Integrácia Chrome Extension s Flask backend API',
+        'Integrácia Chrome rozšírenia s Flask backend API',
         'Normalizácia slovenských znakov pre vyhľadávanie',
         'Rozpoznanie typu stránky (osobný profil vs. firma)',
         'Spracovanie viacerých výsledkov z databázy',
-        'CORS handling medzi extension a backend API',
+        'Riešenie CORS medzi rozšírením a backend API',
         'Spolupráca v tíme počas stáže'
       ],
       en: [
@@ -301,10 +301,10 @@ The project uses Chrome Extension Manifest V3, JavaScript for frontend logic, Fl
         'Získal som skúsenosti s integráciou frontendu a backendu',
         'Pochopil som dôležitosť normalizácie textu v databázach',
         'Naučil som sa pracovať s Chrome Extension API',
-        'Získal som skúsenosti s Flask API development',
+        'Získal som skúsenosti s vývojom Flask API',
         'Zlepšil som svoje zručnosti v týmovej spolupráci',
         'Pochopil som výzvy integrácie externých služieb (LinkedIn)',
-        'Naučil som sa riešiť CORS problémy v Chrome extensions'
+        'Naučil som sa riešiť CORS problémy v Chrome rozšíreniach'
       ],
       en: [
         'I learned to create Chrome extensions with Manifest V3',
