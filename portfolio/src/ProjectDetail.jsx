@@ -336,6 +336,11 @@ function ProjectDetail() {
     setLanguage(savedLanguage);
   }, []);
 
+  useEffect(() => {
+    // Scroll na vrch stránky pri načítaní alebo zmene projektu
+    window.scrollTo(0, 0);
+  }, [projectId]);
+
   // Funkcia na získanie preložených projektov
   const getProjectsData = () => {
     return projectsDataBase.map(project => ({
