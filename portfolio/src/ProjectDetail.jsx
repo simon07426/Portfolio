@@ -337,8 +337,9 @@ function ProjectDetail() {
   }, []);
 
   useEffect(() => {
-    // Scroll na vrch stránky pri načítaní alebo zmene projektu
-    window.scrollTo(0, 0);
+    // Zobraziť stránku hore bez animácie pri načítaní alebo zmene projektu
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [projectId]);
 
   // Funkcia na získanie preložených projektov
