@@ -59,100 +59,6 @@ const softSkills = [
 
 // Translations
 const translations = {
-  sk: {
-    nav: {
-      home: 'Domov',
-      about: 'O mne',
-      projects: 'Projekty',
-      skills: 'Zručnosti',
-      contact: 'Kontakt'
-    },
-    hero: {
-      welcome: 'Vítajte na mojom portfóliu',
-      name: 'Šimon Godarský',
-      description: 'Študent Data Science & Programovania na Lýceu C.S. Lewisa. Baví ma AI, analýza dát, machine learning a moderný web development.',
-      viewProjects: 'Pozrieť projekty',
-      contactMe: 'Kontaktovať ma'
-    },
-    about: {
-      title: 'O mne',
-      text1: 'Motivovaný študent strednej školy so silným záujmom o informatiku a podnikanie. Spoluzakladal som startup, absolvoval som priemyselné stáže a vybudoval som disciplínu cez viac než desať rokov súťažného plávania. Túžim aplikovať zručnosti v riešení problémov a tímovej práci na reálne technologické a podnikateľské výzvy.',
-      text2: 'Špecializujem sa na web development, machine learning a analýzu dát. Rád sa učím nové technológie a aplikujem ich v praktických projektoch.',
-      education: 'Vzdelanie',
-      school: 'Lýceum C.S. Lewisa',
-      field: 'Data Science & Programovanie',
-      years: '2022-2026',
-      language: 'Jazyky',
-      english: 'Angličtina - C1 Cambridge Certificate'
-    },
-    skills: {
-      title: 'Zručnosti',
-      hardSkills: 'Technické zručnosti',
-      softSkills: 'Mäkké zručnosti'
-    },
-    experience: {
-      title: 'Skúsenosti',
-      slido: {
-        company: 'Slido',
-        description: 'Slido je platforma pre interakciu s publikom založená v Bratislave v roku 2012, ktorá zlepšuje zapojenie počas stretnutí a eventov prostredníctvom živých ankiet, Q&A relácií a kvízov. V roku 2021 spoločnosť nadobudla spoločnosť Cisco.',
-        role: 'Stáž',
-        desc1: 'Aplikoval som informatické znalosti pri vývoji produktových funkcií pre platformu interakcie s publikom.',
-        desc2: 'Spolupracoval som s vývojármi na zlepšovaní interných nástrojov na základe spätnej väzby používateľov.',
-        desc3: 'Pracoval som na funkciách pre živé ankety a Q&A relácie, ktoré zlepšujú zapojenie používateľov.'
-      },
-      titans: {
-        company: 'Titans Freelancers',
-        description: 'Titans Freelancers je slovenská IT spoločnosť založená v roku 2013, ktorá spája IT freelancerov s podnikmi hľadajúcimi špecializované expertízy. Poskytuje flexibilné IT riešenia pre rôzne odvetvia.',
-        role: 'Stáž',
-        desc1: 'Spolupracoval som s tímom IT špecialistov na rôznych projektoch pre klientov.',
-        desc2: 'Pomáhal som pri vývoji a údržbe softvérových riešení pre externých klientov.',
-        desc3: 'Získal som skúsenosti s tímovou spolupracou a projektovým manažmentom v IT prostredí.'
-      }
-    },
-    extracurricular: {
-      title: 'Mimoškolské aktivity',
-      swimming: 'Súťažný plavec',
-      swimmingDecade: 'Aktívne sa venujem súťažnému plávaniu viac než desaťročie.',
-      swimmingDesc1: 'Vyvinul som si silnú disciplínu, odolnosť a návyky stanovenia cieľov cez prísny denný tréning a súťaženie.',
-      swimmingDesc2: 'Naučil som sa zvládať tlak, udržiavať sústredenie a konzistentne podávať výkony počas dlhších období.',
-      swimmingDesc3: 'Aplikoval som lekcie zo športu, ako je vytrvalosť a time management, na akademické a osobné projekty.'
-    },
-    projects: {
-      title: 'Projekty',
-      description: 'Prehľad mojich najdôležitejších projektov a práce',
-      viewProject: 'Pozrieť projekt',
-      categories: {
-        'Web Development': 'Web Development',
-        'Data Science': 'Data Science',
-        'Data Visualization': 'Data Visualization',
-        'Game Development': 'Game Development'
-      },
-      detail: {
-        technologies: 'Technológie',
-        about: 'O projekte',
-        features: 'Funkcie',
-        challenges: 'Výzvy',
-        lessons: 'Čo som sa naučil',
-        viewProject: 'Pozrieť projekt',
-        backToProjects: 'Späť na projekty',
-        projectNotFound: 'Projekt nebol nájdený',
-        backToHome: 'Späť na domov',
-        screenshots: 'Screenshots',
-        githubRepo: 'GitHub Repository',
-        gitlabRepo: 'GitLab Repository'
-      }
-    },
-    contact: {
-      title: 'Kontakt',
-      description: 'Neváhajte ma kontaktovať ohľadom spolupráce alebo otázok',
-      email: 'Email',
-      linkedin: 'LinkedIn',
-      github: 'GitHub'
-    },
-    footer: {
-      rights: 'Všetky práva vyhradené.'
-    }
-  },
   en: {
     nav: {
       home: 'Home',
@@ -308,16 +214,9 @@ function HomePage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [darkTheme, setDarkTheme] = useState('blue');
   const [showThemeMenu, setShowThemeMenu] = useState(false);
-  const [language, setLanguage] = useState('sk');
 
-  useEffect(() => {
-    // Načítať preferenciu jazyka z localStorage
-    const savedLanguage = localStorage.getItem('language') || 'sk';
-    setLanguage(savedLanguage);
-  }, []);
-
-  const t = translations[language];
-  const projects = getProjects(language);
+  const t = translations.en;
+  const projects = getProjects('en');
 
   useEffect(() => {
     // Načítať preferenciu z localStorage (defaultne light mode)
@@ -693,19 +592,6 @@ function HomePage() {
                 <a href="#contact" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.contact}</a>
               </div>
               <div className="flex items-center space-x-2">
-                {/* Language Toggle */}
-                <button
-                  onClick={() => {
-                    const newLang = language === 'sk' ? 'en' : 'sk';
-                    setLanguage(newLang);
-                    localStorage.setItem('language', newLang);
-                  }}
-                  className="p-2 rounded-full bg-gray-200 dark:bg-slate-700 dark:[data-theme='purple']:bg-purple-900/50 dark:[data-theme='green']:bg-emerald-900/50 dark:[data-theme='orange']:bg-orange-900/50 dark:[data-theme='pink']:bg-pink-900/50 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 dark:[data-theme='purple']:hover:bg-purple-800/60 dark:[data-theme='green']:hover:bg-emerald-800/60 dark:[data-theme='orange']:hover:bg-orange-800/60 dark:[data-theme='pink']:hover:bg-pink-800/60 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
-                  aria-label="Toggle language"
-                  title={language === 'sk' ? 'Switch to English' : 'Prepnúť na slovenčinu'}
-                >
-                  <span className="text-sm font-semibold">{language === 'sk' ? 'SK' : 'EN'}</span>
-                </button>
                 {isDarkMode && (
                   <div className="relative theme-menu-container">
                     <button
@@ -850,7 +736,7 @@ function HomePage() {
               {softSkills.map((skill, idx) => (
               <div key={idx} className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md dark:shadow-indigo-900/20 dark:[data-theme='purple']:shadow-purple-900/20 dark:[data-theme='green']:shadow-emerald-900/20 dark:[data-theme='orange']:shadow-orange-900/20 dark:[data-theme='pink']:shadow-pink-900/20 dark:[data-theme='cyan']:shadow-cyan-900/20 card-hover border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
                   <h4 className="font-bold text-lg mb-2 text-gray-800 dark:text-slate-200">{skill.name}</h4>
-                  <p className="text-gray-600 dark:text-slate-300 text-sm leading-relaxed">{skill.description[language]}</p>
+                  <p className="text-gray-600 dark:text-slate-300 text-sm leading-relaxed">{skill.description.en}</p>
                 </div>
               ))}
                 </div>

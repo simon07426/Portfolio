@@ -326,15 +326,8 @@ function ProjectDetail() {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [darkTheme, setDarkTheme] = useState('blue');
-  const [language, setLanguage] = useState('sk');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showThemeMenu, setShowThemeMenu] = useState(false);
-
-  useEffect(() => {
-    // Načítať preferenciu jazyka z localStorage
-    const savedLanguage = localStorage.getItem('language') || 'sk';
-    setLanguage(savedLanguage);
-  }, []);
 
   useEffect(() => {
     // Zobraziť stránku hore bez animácie pri načítaní alebo zmene projektu
@@ -346,17 +339,17 @@ function ProjectDetail() {
   const getProjectsData = () => {
     return projectsDataBase.map(project => ({
       ...project,
-      title: typeof project.title === 'object' ? project.title[language] : project.title,
-      description: typeof project.description === 'object' ? project.description[language] : project.description,
-      detailedDescription: typeof project.detailedDescription === 'object' ? project.detailedDescription[language] : project.detailedDescription,
-      features: typeof project.features === 'object' ? project.features[language] : project.features,
-      challenges: typeof project.challenges === 'object' ? project.challenges[language] : project.challenges,
-      lessons: typeof project.lessons === 'object' ? project.lessons[language] : project.lessons
+      title: typeof project.title === 'object' ? project.title.en : project.title,
+      description: typeof project.description === 'object' ? project.description.en : project.description,
+      detailedDescription: typeof project.detailedDescription === 'object' ? project.detailedDescription.en : project.detailedDescription,
+      features: typeof project.features === 'object' ? project.features.en : project.features,
+      challenges: typeof project.challenges === 'object' ? project.challenges.en : project.challenges,
+      lessons: typeof project.lessons === 'object' ? project.lessons.en : project.lessons
     }));
   };
 
   const projectsData = getProjectsData();
-  const t = translations[language];
+  const t = translations.en;
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -623,19 +616,6 @@ function ProjectDetail() {
                 <a href="/#contact" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.contact}</a>
               </div>
               <div className="flex items-center space-x-2">
-                {/* Language Toggle */}
-                <button
-                  onClick={() => {
-                    const newLang = language === 'sk' ? 'en' : 'sk';
-                    setLanguage(newLang);
-                    localStorage.setItem('language', newLang);
-                  }}
-                  className="p-2 rounded-full bg-gray-200 dark:bg-slate-700 dark:[data-theme='purple']:bg-purple-900/50 dark:[data-theme='green']:bg-emerald-900/50 dark:[data-theme='orange']:bg-orange-900/50 dark:[data-theme='pink']:bg-pink-900/50 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 dark:[data-theme='purple']:hover:bg-purple-800/60 dark:[data-theme='green']:hover:bg-emerald-800/60 dark:[data-theme='orange']:hover:bg-orange-800/60 dark:[data-theme='pink']:hover:bg-pink-800/60 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
-                  aria-label="Toggle language"
-                  title={language === 'sk' ? 'Switch to English' : 'Prepnúť na slovenčinu'}
-                >
-                  <span className="text-sm font-semibold">{language === 'sk' ? 'SK' : 'EN'}</span>
-                </button>
                 {isDarkMode && (
                   <div className="relative theme-menu-container">
                     <button
