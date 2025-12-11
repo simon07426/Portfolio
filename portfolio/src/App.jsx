@@ -216,6 +216,7 @@ function HomePage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [darkTheme, setDarkTheme] = useState('blue');
   const [showThemeMenu, setShowThemeMenu] = useState(false);
+  const [visibleSections, setVisibleSections] = useState(new Set(['home']));
 
   const t = translations.en;
   const projects = getProjects('en');
@@ -563,6 +564,29 @@ function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Intersection Observer for section animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setVisibleSections((prev) => new Set([...prev, entry.target.id]));
+        }
+      });
+    }, observerOptions);
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
+
   // Zatvoriť menu pri kliknutí mimo
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -687,8 +711,8 @@ function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="section-padding">
-        <div className="max-w-6xl mx-auto">
+      <section id="about" className="min-h-screen flex items-center justify-center section-padding">
+        <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('about') ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">{t.about.title}</h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 text-lg text-gray-700 dark:text-slate-200 leading-relaxed">
@@ -714,8 +738,8 @@ function HomePage() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="section-padding">
-        <div className="max-w-6xl mx-auto">
+      <section id="skills" className="min-h-screen flex items-center justify-center section-padding">
+        <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('skills') ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">{t.skills.title}</h2>
           
           {/* Hard Skills */}
@@ -749,8 +773,8 @@ function HomePage() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="section-padding">
-        <div className="max-w-6xl mx-auto">
+      <section id="experience" className="min-h-screen flex items-center justify-center section-padding">
+        <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('experience') ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">{t.experience.title}</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {/* Slido */}
@@ -819,8 +843,8 @@ function HomePage() {
       </section>
 
       {/* Extracurricular Section */}
-      <section id="extracurricular" className="section-padding">
-        <div className="max-w-6xl mx-auto">
+      <section id="extracurricular" className="min-h-screen flex items-center justify-center section-padding">
+        <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('extracurricular') ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">{t.extracurricular.title}</h2>
           <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
             <h3 className="text-2xl font-bold mb-4 text-gray-800 dark:text-slate-200">{t.extracurricular.swimming}</h3>
@@ -855,8 +879,8 @@ function HomePage() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="section-padding">
-        <div className="max-w-7xl mx-auto">
+      <section id="projects" className="min-h-screen flex items-center justify-center section-padding">
+        <div className={`max-w-7xl mx-auto w-full section-animate ${visibleSections.has('projects') ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 gradient-text">{t.projects.title}</h2>
           <p className="text-center text-gray-600 dark:text-slate-300 mb-12 text-lg">
             {t.projects.description}
@@ -903,8 +927,8 @@ function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="section-padding">
-        <div className="max-w-4xl mx-auto">
+      <section id="contact" className="min-h-screen flex items-center justify-center section-padding">
+        <div className={`max-w-4xl mx-auto w-full section-animate ${visibleSections.has('contact') ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 gradient-text">{t.contact.title}</h2>
           <p className="text-center text-gray-600 dark:text-slate-300 mb-12 text-lg">
             {t.contact.description}
