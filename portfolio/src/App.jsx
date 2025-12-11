@@ -63,8 +63,10 @@ const translations = {
     nav: {
       home: 'Home',
       about: 'About',
-      projects: 'Projects',
       skills: 'Skills',
+      experience: 'Experience',
+      extracurricular: 'Activities',
+      projects: 'Projects',
       contact: 'Contact'
     },
     hero: {
@@ -584,11 +586,13 @@ function HomePage() {
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="text-xl font-bold gradient-text hover:opacity-80 transition-opacity">Portfolio</Link>
             <div className="flex items-center space-x-4">
-              <div className="hidden md:flex space-x-8">
+              <div className="hidden md:flex space-x-6 lg:space-x-8">
                 <a href="#home" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.home}</a>
                 <a href="#about" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.about}</a>
-                <a href="#projects" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.projects}</a>
                 <a href="#skills" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.skills}</a>
+                <a href="#experience" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.experience}</a>
+                <a href="#extracurricular" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.extracurricular}</a>
+                <a href="#projects" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.projects}</a>
                 <a href="#contact" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.contact}</a>
               </div>
               <div className="flex items-center space-x-2">
