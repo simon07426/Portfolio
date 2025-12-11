@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
 import ProjectDetail, { projectsDataBase } from './ProjectDetail.jsx';
@@ -65,7 +65,6 @@ const translations = {
       about: 'About',
       skills: 'Skills',
       experience: 'Experience',
-      extracurricular: 'Activities',
       projects: 'Projects',
       contact: 'Contact'
     },
@@ -217,6 +216,8 @@ function HomePage() {
   const [darkTheme, setDarkTheme] = useState('blue');
   const [showThemeMenu, setShowThemeMenu] = useState(false);
   const [visibleSections, setVisibleSections] = useState(new Set(['home']));
+  const scrollDirectionRef = useRef('down');
+  const lastScrollYRef = useRef(window.scrollY);
 
   const t = translations.en;
   const projects = getProjects('en');
@@ -564,17 +565,73 @@ function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Intersection Observer for section animations
+  // Intersection Observer for section animations - only triggers when scrolling down
   useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      scrollDirectionRef.current = currentScrollY > lastScrollYRef.current ? 'down' : 'up';
+      lastScrollYRef.current = currentScrollY;
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
     const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
+      threshold: [0, 0.15],
+      rootMargin: '0px 0px -50px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
+        const sectionId = entry.target.id;
+        const sectionElement = entry.target.querySelector('.section-animate');
+        const isScrollingDown = scrollDirectionRef.current === 'down';
+
+        // Only process if scrolling down OR if section is already visible (scrolling up)
         if (entry.isIntersecting) {
-          setVisibleSections((prev) => new Set([...prev, entry.target.id]));
+          if (isScrollingDown) {
+            // Animate ONLY when scrolling down - always reset and re-animate
+            if (sectionElement) {
+              sectionElement.classList.remove('visible');
+              // Force reflow to reset animation
+              void sectionElement.offsetHeight;
+              setTimeout(() => {
+                sectionElement.classList.add('visible');
+              }, 10);
+            }
+            setVisibleSections((prev) => new Set([...prev, sectionId]));
+          } else {
+            // When scrolling up, just ensure content is visible WITHOUT any animation
+            if (sectionElement) {
+              // Add a class to disable animations
+              sectionElement.classList.add('no-animation');
+              sectionElement.style.opacity = '1';
+              sectionElement.style.transform = 'translateY(0)';
+              // Set child elements to visible immediately without animation
+              const children = sectionElement.querySelectorAll('*');
+              children.forEach((child) => {
+                child.style.transition = 'none';
+                child.style.opacity = '1';
+                child.style.transform = 'translateY(0)';
+              });
+              sectionElement.classList.add('visible');
+              // Remove no-animation class after styles are applied
+              setTimeout(() => {
+                sectionElement.classList.remove('no-animation');
+                children.forEach((child) => {
+                  child.style.transition = '';
+                });
+              }, 100);
+            }
+            setVisibleSections((prev) => new Set([...prev, sectionId]));
+          }
+        } else {
+          // When section completely leaves viewport, reset animation for next time
+          if (sectionElement) {
+            sectionElement.classList.remove('visible');
+            // Reset inline styles when leaving viewport
+            sectionElement.style.opacity = '';
+            sectionElement.style.transform = '';
+          }
         }
       });
     }, observerOptions);
@@ -583,6 +640,7 @@ function HomePage() {
     sections.forEach((section) => observer.observe(section));
 
     return () => {
+      window.removeEventListener('scroll', handleScroll);
       sections.forEach((section) => observer.unobserve(section));
     };
   }, []);
@@ -615,7 +673,6 @@ function HomePage() {
                 <a href="#about" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.about}</a>
                 <a href="#skills" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.skills}</a>
                 <a href="#experience" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.experience}</a>
-                <a href="#extracurricular" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.extracurricular}</a>
                 <a href="#projects" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.projects}</a>
                 <a href="#contact" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.contact}</a>
               </div>
@@ -711,11 +768,11 @@ function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="min-h-screen flex items-center justify-center section-padding">
+      <section id="about" className="min-h-screen flex items-center justify-center py-8 md:py-10 px-4 sm:px-6 lg:px-8">
         <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('about') ? 'visible' : ''}`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">{t.about.title}</h2>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 text-lg text-gray-700 dark:text-slate-200 leading-relaxed">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 md:mb-12 gradient-text">{t.about.title}</h2>
+          <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-center">
+            <div className="space-y-5 md:space-y-6 text-lg md:text-xl text-gray-700 dark:text-slate-200 leading-relaxed">
               <p>
                 {t.about.text1}
               </p>
@@ -723,9 +780,9 @@ function HomePage() {
                 {t.about.text2}
               </p>
             </div>
-            <div className={`${getThemeClasses.educationCardGradient()} rounded-3xl p-8 text-white shadow-2xl border ${getThemeClasses.educationCardBorder()}`}>
-              <h3 className="text-2xl font-bold mb-4">{t.about.education}</h3>
-              <p className="text-lg mb-1 font-semibold">{t.about.school}</p>
+            <div className={`${getThemeClasses.educationCardGradient()} rounded-3xl p-8 md:p-10 text-white shadow-2xl border ${getThemeClasses.educationCardBorder()}`}>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 md:mb-5">{t.about.education}</h3>
+              <p className="text-lg md:text-xl mb-1 md:mb-2 font-semibold">{t.about.school}</p>
               <p className="text-blue-100 dark:text-blue-200 dark:[data-theme='purple']:text-purple-200 dark:[data-theme='green']:text-emerald-200 dark:[data-theme='orange']:text-orange-200 dark:[data-theme='pink']:text-pink-200 dark:[data-theme='cyan']:text-cyan-200 mb-1">{t.about.field}</p>
               <p className="text-sm text-blue-200 dark:text-blue-300 dark:[data-theme='purple']:text-purple-300 dark:[data-theme='green']:text-emerald-300 dark:[data-theme='orange']:text-orange-300 dark:[data-theme='pink']:text-pink-300 dark:[data-theme='cyan']:text-cyan-300 mb-4">{t.about.years}</p>
               <div className="mt-4 pt-4 border-t border-white/20">
@@ -738,13 +795,13 @@ function HomePage() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="min-h-screen flex items-center justify-center section-padding">
+      <section id="skills" className="min-h-screen flex items-center justify-center py-8 md:py-10 px-4 sm:px-6 lg:px-8">
         <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('skills') ? 'visible' : ''}`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">{t.skills.title}</h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 md:mb-12 gradient-text">{t.skills.title}</h2>
           
           {/* Hard Skills */}
-          <div className="mb-12">
-            <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-slate-200">{t.skills.hardSkills}</h3>
+          <div className="mb-10 md:mb-12">
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-7 text-gray-800 dark:text-slate-200">{t.skills.hardSkills}</h3>
             <div className="flex flex-wrap gap-3">
               {hardSkills.map((skill, idx) => (
                 <span
@@ -759,7 +816,7 @@ function HomePage() {
 
           {/* Soft Skills */}
           <div>
-            <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-slate-200">{t.skills.softSkills}</h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-7 text-gray-800 dark:text-slate-200">{t.skills.softSkills}</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {softSkills.map((skill, idx) => (
               <div key={idx} className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md dark:shadow-indigo-900/20 dark:[data-theme='purple']:shadow-purple-900/20 dark:[data-theme='green']:shadow-emerald-900/20 dark:[data-theme='orange']:shadow-orange-900/20 dark:[data-theme='pink']:shadow-pink-900/20 dark:[data-theme='cyan']:shadow-cyan-900/20 card-hover border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
@@ -773,9 +830,9 @@ function HomePage() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="min-h-screen flex items-center justify-center section-padding">
+      <section id="experience" className="min-h-screen flex items-center justify-center py-8 md:py-10 px-4 sm:px-6 lg:px-8">
         <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('experience') ? 'visible' : ''}`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">{t.experience.title}</h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 md:mb-12 gradient-text">{t.experience.title}</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {/* Slido */}
             <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
@@ -838,51 +895,49 @@ function HomePage() {
                 </li>
               </ul>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Extracurricular Section */}
-      <section id="extracurricular" className="min-h-screen flex items-center justify-center section-padding">
-        <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('extracurricular') ? 'visible' : ''}`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">{t.extracurricular.title}</h2>
-          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
-            <h3 className="text-2xl font-bold mb-4 text-gray-800 dark:text-slate-200">{t.extracurricular.swimming}</h3>
-            <ul className="space-y-3 text-gray-700 dark:text-slate-300">
-              <li className="flex items-start">
-                <svg className={`w-5 h-5 mr-3 mt-1 ${getThemeClasses.textColor()} flex-shrink-0`} fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>{t.extracurricular.swimmingDecade}</span>
-              </li>
-              <li className="flex items-start">
-                <svg className={`w-5 h-5 mr-3 mt-1 ${getThemeClasses.textColor()} flex-shrink-0`} fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>{t.extracurricular.swimmingDesc1}</span>
-              </li>
-              <li className="flex items-start">
-                <svg className={`w-5 h-5 mr-3 mt-1 ${getThemeClasses.textColor()} flex-shrink-0`} fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>{t.extracurricular.swimmingDesc2}</span>
-              </li>
-              <li className="flex items-start">
-                <svg className={`w-5 h-5 mr-3 mt-1 ${getThemeClasses.textColor()} flex-shrink-0`} fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>{t.extracurricular.swimmingDesc3}</span>
-              </li>
-            </ul>
+            {/* Extracurricular Activities - Subsection */}
+            <div className="mt-12 md:mt-16 col-span-2">
+              <h3 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-10 text-gray-800 dark:text-slate-200">{t.extracurricular.title}</h3>
+              <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-10 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
+                <h4 className="text-2xl font-bold mb-4 text-gray-800 dark:text-slate-200">{t.extracurricular.swimming}</h4>
+                <ul className="space-y-3 text-gray-700 dark:text-slate-300">
+                  <li className="flex items-start">
+                    <svg className={`w-5 h-5 mr-3 mt-1 ${getThemeClasses.textColor()} flex-shrink-0`} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>{t.extracurricular.swimmingDecade}</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className={`w-5 h-5 mr-3 mt-1 ${getThemeClasses.textColor()} flex-shrink-0`} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>{t.extracurricular.swimmingDesc1}</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className={`w-5 h-5 mr-3 mt-1 ${getThemeClasses.textColor()} flex-shrink-0`} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>{t.extracurricular.swimmingDesc2}</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className={`w-5 h-5 mr-3 mt-1 ${getThemeClasses.textColor()} flex-shrink-0`} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>{t.extracurricular.swimmingDesc3}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="min-h-screen flex items-center justify-center section-padding">
+      <section id="projects" className="min-h-screen flex items-center justify-center py-8 md:py-10 px-4 sm:px-6 lg:px-8">
         <div className={`max-w-7xl mx-auto w-full section-animate ${visibleSections.has('projects') ? 'visible' : ''}`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 gradient-text">{t.projects.title}</h2>
-          <p className="text-center text-gray-600 dark:text-slate-300 mb-12 text-lg">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4 md:mb-5 gradient-text">{t.projects.title}</h2>
+          <p className="text-center text-gray-600 dark:text-slate-300 mb-10 md:mb-12 text-lg md:text-xl">
             {t.projects.description}
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -927,8 +982,8 @@ function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="min-h-screen flex items-center justify-center section-padding">
-        <div className={`max-w-4xl mx-auto w-full section-animate ${visibleSections.has('contact') ? 'visible' : ''}`}>
+      <section id="contact" className="section-padding">
+        <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 gradient-text">{t.contact.title}</h2>
           <p className="text-center text-gray-600 dark:text-slate-300 mb-12 text-lg">
             {t.contact.description}
