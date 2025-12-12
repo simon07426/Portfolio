@@ -268,4 +268,36 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Horizontal scroll for projects */
+  .projects-scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+
+  .projects-scroll-container::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .projects-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  .projects-scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 10px;
+  }
+
+  .projects-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.7);
+  }
+
+  .dark .projects-scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.5);
+  }
+
+  .dark .projects-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.7);
+  }
 }

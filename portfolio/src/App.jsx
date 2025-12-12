@@ -940,11 +940,12 @@ function HomePage() {
           <p className="text-center text-gray-600 dark:text-slate-300 mb-10 md:mb-12 text-lg md:text-xl">
             {t.projects.description}
           </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="overflow-x-auto pb-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 projects-scroll-container">
+            <div className="flex gap-6 md:gap-8 min-w-max">
             {projects.map((project, idx) => (
               <div 
                 key={idx} 
-                className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg dark:shadow-indigo-900/20 dark:[data-theme='purple']:shadow-purple-900/20 dark:[data-theme='green']:shadow-emerald-900/20 dark:[data-theme='orange']:shadow-orange-900/20 dark:[data-theme='pink']:shadow-pink-900/20 dark:[data-theme='cyan']:shadow-cyan-900/20 card-hover group overflow-hidden relative border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30"
+                  className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg dark:shadow-indigo-900/20 dark:[data-theme='purple']:shadow-purple-900/20 dark:[data-theme='green']:shadow-emerald-900/20 dark:[data-theme='orange']:shadow-orange-900/20 dark:[data-theme='pink']:shadow-pink-900/20 dark:[data-theme='cyan']:shadow-cyan-900/20 card-hover group overflow-hidden relative border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30 w-[80vw] sm:w-[65vw] md:w-[50vw] lg:w-[38vw] xl:w-[30vw] flex-shrink-0"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-400 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 dark:[data-theme='purple']:from-purple-500 dark:[data-theme='purple']:via-pink-500 dark:[data-theme='purple']:to-purple-500 dark:[data-theme='green']:from-emerald-500 dark:[data-theme='green']:via-teal-500 dark:[data-theme='green']:to-emerald-500 dark:[data-theme='orange']:from-orange-500 dark:[data-theme='orange']:via-red-500 dark:[data-theme='orange']:to-orange-500 dark:[data-theme='pink']:from-pink-500 dark:[data-theme='pink']:via-rose-500 dark:[data-theme='pink']:to-pink-500 dark:[data-theme='cyan']:from-cyan-500 dark:[data-theme='cyan']:via-blue-500 dark:[data-theme='cyan']:to-cyan-500 rounded-bl-full opacity-10 dark:opacity-20 group-hover:opacity-20 dark:group-hover:opacity-30 transition-opacity"></div>
                 <div className="relative z-10">
@@ -977,19 +978,20 @@ function HomePage() {
                 </div>
             </div>
           ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
       <section id="contact" className="section-padding">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 gradient-text">{t.contact.title}</h2>
           <p className="text-center text-gray-600 dark:text-slate-300 mb-12 text-lg">
             {t.contact.description}
           </p>
           <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
-            <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="grid md:grid-cols-2 gap-8 text-center">
               <div className="group">
                 <div className={`w-16 h-16 ${getThemeClasses.iconGradient()} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform ${getThemeClasses.iconShadow()}`}>
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1010,17 +1012,6 @@ function HomePage() {
                 <h3 className="font-semibold text-gray-800 dark:text-slate-200 mb-2">{t.contact.linkedin}</h3>
                 <a href="#" className={`${getThemeClasses.textColor()} ${getThemeClasses.hoverTextColor()} transition-colors`}>
                   linkedin.com/in/tvoje-meno
-                </a>
-              </div>
-              <div className="group">
-                <div className={`w-16 h-16 ${getThemeClasses.iconGradient()} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform ${getThemeClasses.iconShadow()}`}>
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482 3.97-1.32 6.833-5.08 6.833-9.503C22 6.515 17.522 2 12 2z" clipRule="evenodd"/>
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-gray-800 dark:text-slate-200 mb-2">{t.contact.github}</h3>
-                <a href="#" className={`${getThemeClasses.textColor()} ${getThemeClasses.hoverTextColor()} transition-colors`}>
-                  github.com/tvoje-meno
                 </a>
               </div>
             </div>

@@ -318,6 +318,95 @@ The project uses Chrome Extension Manifest V3, JavaScript for frontend logic, Fl
       ]
     },
     images: []
+  },
+  {
+    id: 'patractino-crowdfunding',
+    title: { sk: 'PátračTino Crowdfunding', en: 'PátračTino Crowdfunding' },
+    description: { 
+      sk: 'Skupinový projekt odmenového crowdfundingu pre spoločnosť PátračTino na platforme StartLabe. Cieľ 500€ bol naplnený na 162%.',
+      en: 'Group project of reward-based crowdfunding for PátračTino company on StartLabe platform. Goal of 500€ was achieved at 162%.'
+    },
+    detailedDescription: {
+      sk: `PátračTino Crowdfunding bol skupinový projekt odmenového crowdfundingu, na ktorom som pracoval v tíme. Projekt bol vytvorený pre spoločnosť PátračTino a prebiehal na platforme StartLabe.
+
+Každý člen tímu mal svoju špecifickú úlohu v projekte. Moja úloha zahŕňala prípravu príspevkov a cien pre odmenový crowdfunding v rôznych hodnotách. Spolupracoval som s tímom na vytvorení atraktívnych odmenových balíčkov, ktoré by motivovali ľudí k príspevkom.
+
+Projekt zahŕňal aj platenú marketingovú kampaň, ktorá pomohla zvýšiť dosah a úspešnosť crowdfundingovej kampane. Cieľom bolo zozbierať 500€ pre spoločnosť PátračTino, ktorá nepotrebovala viac finančných prostriedkov.
+
+Kampaň bola veľmi úspešná - cieľ bol naplnený na 162%, čo znamená, že sa podarilo zozbierať 810€. Tento projekt mi dal skúsenosti s crowdfundingom, marketingom a tímovou spoluprácou v ne-IT prostredí.`,
+      en: `PátračTino Crowdfunding was a group project of reward-based crowdfunding that I worked on in a team. The project was created for PátračTino company and took place on the StartLabe platform.
+
+Each team member had their specific role in the project. My role included preparing contributions and prices for reward-based crowdfunding at various values. I collaborated with the team to create attractive reward packages that would motivate people to contribute.
+
+The project also included a paid marketing campaign that helped increase the reach and success of the crowdfunding campaign. The goal was to raise 500€ for PátračTino company, which didn't need more financial resources.
+
+The campaign was very successful - the goal was achieved at 162%, meaning we managed to raise 810€. This project gave me experience with crowdfunding, marketing, and team collaboration in a non-IT environment.`
+    },
+    technologies: ['Crowdfunding', 'Marketing', 'StartLabe', 'Project Management'],
+    category: 'Marketing',
+    link: null,
+    repositoryLink: null,
+    features: {
+      sk: [
+        'Príprava príspevkov a cien pre odmenový crowdfunding',
+        'Rôzne hodnoty odmenových balíčkov',
+        'Platená marketingová kampaň',
+        'Platforma StartLabe',
+        'Tímová spolupráca s rozdelenými úlohami',
+        'Cieľ 500€ naplnený na 162%',
+        'Zozbieraných 810€'
+      ],
+      en: [
+        'Preparation of contributions and prices for reward-based crowdfunding',
+        'Various reward package values',
+        'Paid marketing campaign',
+        'StartLabe platform',
+        'Team collaboration with divided tasks',
+        'Goal of 500€ achieved at 162%',
+        'Raised 810€'
+      ]
+    },
+    challenges: {
+      sk: [
+        'Koordinácia práce v tíme s rôznymi úlohami',
+        'Vytvorenie atraktívnych odmenových balíčkov',
+        'Plánovanie a realizácia marketingovej kampane',
+        'Komunikácia so spoločnosťou PátračTino',
+        'Použitie platformy StartLabe',
+        'Dosiahnutie crowdfundingového cieľa',
+        'Spolupráca v ne-IT prostredí'
+      ],
+      en: [
+        'Coordinating team work with different tasks',
+        'Creating attractive reward packages',
+        'Planning and executing marketing campaign',
+        'Communication with PátračTino company',
+        'Using StartLabe platform',
+        'Achieving crowdfunding goal',
+        'Collaboration in non-IT environment'
+      ]
+    },
+    lessons: {
+      sk: [
+        'Naučil som sa pracovať s crowdfundingom a odmenovými balíčkami',
+        'Získal som skúsenosti s marketingovými kampaňami',
+        'Pochopil som dôležitosť tímovej spolupráce a rozdelenia úloh',
+        'Naučil som sa používať platformu StartLabe',
+        'Získal som skúsenosti s komunikáciou so zákazníkmi',
+        'Pochopil som proces plánovania a realizácie crowdfundingovej kampane',
+        'Zlepšil som svoje zručnosti v ne-IT prostredí'
+      ],
+      en: [
+        'I learned to work with crowdfunding and reward packages',
+        'I gained experience with marketing campaigns',
+        'I understood the importance of team collaboration and task division',
+        'I learned to use StartLabe platform',
+        'I gained experience with customer communication',
+        'I understood the process of planning and executing crowdfunding campaigns',
+        'I improved my skills in non-IT environment'
+      ]
+    },
+    images: []
   }
 ];
 
@@ -787,7 +876,7 @@ function ProjectDetail() {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4">
-            {project.repositoryLink && (() => {
+            {project.repositoryLink && project.repositoryLink !== null && (() => {
               const isGitLab = project.repositoryLink.includes('gitlab.com');
               const isGitHub = project.repositoryLink.includes('github.com');
               return (
