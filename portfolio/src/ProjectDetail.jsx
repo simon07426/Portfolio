@@ -4,22 +4,6 @@ import './App.css';
 import { translations } from './App.jsx';
 
 const darkThemes = {
-  blue: {
-    bg: 'from-slate-900 via-indigo-950 to-slate-800',
-    card: 'bg-slate-800',
-    text: 'text-slate-200',
-    accent: 'indigo',
-    border: 'border-indigo-900/30',
-    shadow: 'shadow-indigo-900/20'
-  },
-  purple: {
-    bg: 'from-slate-900 via-purple-950 to-slate-800',
-    card: 'bg-slate-800',
-    text: 'text-slate-200',
-    accent: 'purple',
-    border: 'border-purple-900/30',
-    shadow: 'shadow-purple-900/20'
-  },
   green: {
     bg: 'from-slate-900 via-emerald-950 to-slate-800',
     card: 'bg-slate-800',
@@ -35,14 +19,6 @@ const darkThemes = {
     accent: 'orange',
     border: 'border-orange-900/30',
     shadow: 'shadow-orange-900/20'
-  },
-  pink: {
-    bg: 'from-slate-900 via-pink-950 to-slate-800',
-    card: 'bg-slate-800',
-    text: 'text-slate-200',
-    accent: 'pink',
-    border: 'border-pink-900/30',
-    shadow: 'shadow-pink-900/20'
   },
   cyan: {
     bg: 'from-slate-900 via-cyan-950 to-slate-800',
@@ -321,7 +297,7 @@ The project uses Chrome Extension Manifest V3, JavaScript for frontend logic, Fl
   },
   {
     id: 'patractino-crowdfunding',
-    title: { sk: 'PátračTino Crowdfunding', en: 'PátračTino Crowdfunding' },
+    title: { sk: 'Crowdfunding', en: 'Crowdfunding' },
     description: { 
       sk: 'Skupinový projekt odmenového crowdfundingu pre spoločnosť PátračTino na platforme StartLabe. Cieľ 500€ bol naplnený na 162%.',
       en: 'Group project of reward-based crowdfunding for PátračTino company on StartLabe platform. Goal of 500€ was achieved at 162%.'
@@ -413,8 +389,8 @@ The campaign was very successful - the goal was achieved at 162%, meaning we man
 function ProjectDetail() {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [darkTheme, setDarkTheme] = useState('blue');
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [darkTheme, setDarkTheme] = useState('cyan');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showThemeMenu, setShowThemeMenu] = useState(false);
 
@@ -442,8 +418,9 @@ function ProjectDetail() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    const savedDarkTheme = localStorage.getItem('darkTheme') || 'blue';
-    const shouldBeDark = savedTheme === 'dark';
+    const savedDarkTheme = localStorage.getItem('darkTheme') || 'cyan';
+    // Ak nie je v localStorage, default je dark mode
+    const shouldBeDark = savedTheme === null ? true : savedTheme === 'dark';
     
     setIsDarkMode(shouldBeDark);
     setDarkTheme(savedDarkTheme);
@@ -453,14 +430,13 @@ function ProjectDetail() {
       document.documentElement.setAttribute('data-theme', savedDarkTheme);
     } else {
       document.documentElement.classList.remove('dark');
-      document.documentElement.removeAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', savedDarkTheme);
     }
   }, []);
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.setAttribute('data-theme', darkTheme);
-    }
+    // Aplikovať tému vždy, aj v light mode
+    document.documentElement.setAttribute('data-theme', darkTheme);
   }, [darkTheme, isDarkMode]);
 
   const toggleDarkMode = () => {
@@ -473,7 +449,7 @@ function ProjectDetail() {
       localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      document.documentElement.removeAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', darkTheme);
       localStorage.setItem('theme', 'light');
     }
   };
@@ -481,9 +457,8 @@ function ProjectDetail() {
   const changeDarkTheme = (themeName) => {
     setDarkTheme(themeName);
     localStorage.setItem('darkTheme', themeName);
-    if (isDarkMode) {
-      document.documentElement.setAttribute('data-theme', themeName);
-    }
+    // Aplikovať tému aj v light mode
+    document.documentElement.setAttribute('data-theme', themeName);
     setShowThemeMenu(false);
   };
 
@@ -514,7 +489,7 @@ function ProjectDetail() {
           <h1 className="text-4xl font-bold mb-4">{t.projects.detail.projectNotFound}</h1>
           <button
             onClick={() => navigate('/')}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className={`px-6 py-3 ${getThemeClasses.buttonGradient()} text-white rounded-lg ${getThemeClasses.shadowColor()} transition-colors`}
           >
             {t.projects.detail.backToHome}
           </button>
@@ -525,142 +500,180 @@ function ProjectDetail() {
 
   const getThemeClasses = {
     textColor: () => {
-      if (!isDarkMode) return 'text-blue-600';
+      if (!isDarkMode) {
+        const colors = {
+          green: 'text-emerald-600',
+          orange: 'text-orange-600',
+          cyan: 'text-cyan-600'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
       const colors = {
-        blue: 'text-blue-400',
-        purple: 'text-purple-400',
         green: 'text-emerald-400',
         orange: 'text-orange-400',
-        pink: 'text-pink-400',
         cyan: 'text-cyan-400'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     borderColor: () => {
-      if (!isDarkMode) return 'border-blue-600';
+      if (!isDarkMode) {
+        const colors = {
+          green: 'border-emerald-600',
+          orange: 'border-orange-600',
+          cyan: 'border-cyan-600'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
       const colors = {
-        blue: 'border-blue-400',
-        purple: 'border-purple-400',
         green: 'border-emerald-400',
         orange: 'border-orange-400',
-        pink: 'border-pink-400',
         cyan: 'border-cyan-400'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     buttonGradient: () => {
-      if (!isDarkMode) return 'bg-gradient-to-r from-blue-600 to-indigo-600';
+      if (!isDarkMode) {
+        const gradients = {
+          green: 'bg-gradient-to-r from-emerald-600 to-teal-600',
+          orange: 'bg-gradient-to-r from-orange-600 to-amber-600',
+          cyan: 'bg-gradient-to-r from-cyan-600 to-blue-600'
+        };
+        return gradients[darkTheme] || gradients.cyan;
+      }
       const gradients = {
-        blue: 'bg-gradient-to-r from-blue-500 to-purple-600',
-        purple: 'bg-gradient-to-r from-purple-500 to-pink-600',
         green: 'bg-gradient-to-r from-emerald-500 to-teal-600',
         orange: 'bg-gradient-to-r from-orange-500 to-red-600',
-        pink: 'bg-gradient-to-r from-pink-500 to-rose-600',
         cyan: 'bg-gradient-to-r from-cyan-500 to-blue-600'
       };
-      return gradients[darkTheme] || gradients.blue;
+      return gradients[darkTheme] || gradients.cyan;
     },
     badgeBg: () => {
-      if (!isDarkMode) return 'bg-blue-100';
+      if (!isDarkMode) {
+        const backgrounds = {
+          green: 'bg-emerald-100',
+          orange: 'bg-orange-100',
+          cyan: 'bg-cyan-100'
+        };
+        return backgrounds[darkTheme] || backgrounds.cyan;
+      }
       const backgrounds = {
-        blue: 'bg-indigo-900/60',
-        purple: 'bg-purple-900/60',
         green: 'bg-emerald-900/60',
         orange: 'bg-orange-900/60',
-        pink: 'bg-pink-900/60',
         cyan: 'bg-cyan-900/60'
       };
-      return backgrounds[darkTheme] || backgrounds.blue;
+      return backgrounds[darkTheme] || backgrounds.cyan;
     },
     badgeText: () => {
-      if (!isDarkMode) return 'text-blue-700';
+      if (!isDarkMode) {
+        const colors = {
+          green: 'text-emerald-700',
+          orange: 'text-orange-700',
+          cyan: 'text-cyan-700'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
       const colors = {
-        blue: 'text-blue-300',
-        purple: 'text-purple-300',
         green: 'text-emerald-300',
         orange: 'text-orange-300',
-        pink: 'text-pink-300',
         cyan: 'text-cyan-300'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     badgeBorder: () => {
-      if (!isDarkMode) return 'border-blue-200';
+      if (!isDarkMode) {
+        const borders = {
+          green: 'border-emerald-200',
+          orange: 'border-orange-200',
+          cyan: 'border-cyan-200'
+        };
+        return borders[darkTheme] || borders.cyan;
+      }
       const borders = {
-        blue: 'border-indigo-700/50',
-        purple: 'border-purple-700/50',
         green: 'border-emerald-700/50',
         orange: 'border-orange-700/50',
-        pink: 'border-pink-700/50',
         cyan: 'border-cyan-700/50'
       };
-      return borders[darkTheme] || borders.blue;
+      return borders[darkTheme] || borders.cyan;
     },
     techBadgeBg: () => {
       if (!isDarkMode) {
         const backgrounds = {
-          blue: 'bg-blue-100',
-          purple: 'bg-purple-100',
           green: 'bg-emerald-100',
           orange: 'bg-orange-100',
-          pink: 'bg-pink-100',
           cyan: 'bg-cyan-100'
         };
-        return backgrounds[darkTheme] || backgrounds.blue;
+        return backgrounds[darkTheme] || backgrounds.cyan;
       }
       const backgrounds = {
-        blue: 'bg-indigo-900/60',
-        purple: 'bg-purple-900/60',
         green: 'bg-emerald-900/60',
         orange: 'bg-orange-900/60',
-        pink: 'bg-pink-900/60',
         cyan: 'bg-cyan-900/60'
       };
-      return backgrounds[darkTheme] || backgrounds.blue;
+      return backgrounds[darkTheme] || backgrounds.cyan;
     },
     techBadgeText: () => {
       if (!isDarkMode) {
         const colors = {
-          blue: 'text-blue-700',
-          purple: 'text-purple-700',
           green: 'text-emerald-700',
           orange: 'text-orange-700',
-          pink: 'text-pink-700',
           cyan: 'text-cyan-700'
         };
-        return colors[darkTheme] || colors.blue;
+        return colors[darkTheme] || colors.cyan;
       }
       const colors = {
-        blue: 'text-blue-300',
-        purple: 'text-purple-300',
         green: 'text-emerald-300',
         orange: 'text-orange-300',
-        pink: 'text-pink-300',
         cyan: 'text-cyan-300'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     techBadgeBorder: () => {
       if (!isDarkMode) {
         const borders = {
-          blue: 'border-blue-200',
-          purple: 'border-purple-200',
           green: 'border-emerald-200',
           orange: 'border-orange-200',
-          pink: 'border-pink-200',
           cyan: 'border-cyan-200'
         };
-        return borders[darkTheme] || borders.blue;
+        return borders[darkTheme] || borders.cyan;
       }
       const borders = {
-        blue: 'border-indigo-700/50',
-        purple: 'border-purple-700/50',
         green: 'border-emerald-700/50',
         orange: 'border-orange-700/50',
-        pink: 'border-pink-700/50',
         cyan: 'border-cyan-700/50'
       };
-      return borders[darkTheme] || borders.blue;
+      return borders[darkTheme] || borders.cyan;
+    },
+    hoverTextColor: () => {
+      if (!isDarkMode) {
+        const colors = {
+          green: 'hover:text-emerald-600',
+          orange: 'hover:text-orange-600',
+          cyan: 'hover:text-cyan-600'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
+      const colors = {
+        green: 'hover:text-teal-400',
+        orange: 'hover:text-red-400',
+        cyan: 'hover:text-blue-400'
+      };
+      return colors[darkTheme] || colors.cyan;
+    },
+    shadowColor: () => {
+      if (!isDarkMode) {
+        const shadows = {
+          green: 'hover:shadow-emerald-500/50',
+          orange: 'hover:shadow-orange-500/50',
+          cyan: 'hover:shadow-cyan-500/50'
+        };
+        return shadows[darkTheme] || shadows.cyan;
+      }
+      const shadows = {
+        green: 'hover:shadow-emerald-500/50',
+        orange: 'hover:shadow-orange-500/50',
+        cyan: 'hover:shadow-cyan-500/50'
+      };
+      return shadows[darkTheme] || shadows.cyan;
     },
     // Card background - transparentné pozadie pre lepší kontrast
     cardBg: () => {
@@ -674,14 +687,11 @@ function ProjectDetail() {
         return 'bg-gradient-to-br from-gray-50 via-white to-gray-50';
       }
       const gradients = {
-        blue: 'bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800',
-        purple: 'bg-gradient-to-br from-slate-900 via-purple-950 to-slate-800',
         green: 'bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-800',
         orange: 'bg-gradient-to-br from-slate-900 via-orange-950 to-slate-800',
-        pink: 'bg-gradient-to-br from-slate-900 via-pink-950 to-slate-800',
         cyan: 'bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-800'
       };
-      return gradients[darkTheme] || gradients.blue;
+      return gradients[darkTheme] || gradients.cyan;
     }
   };
 
@@ -690,7 +700,7 @@ function ProjectDetail() {
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled 
-          ? `bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-indigo-900/50 dark:[data-theme='purple']:border-purple-900/50 dark:[data-theme='green']:border-emerald-900/50 dark:[data-theme='orange']:border-orange-900/50 dark:[data-theme='pink']:border-pink-900/50 dark:[data-theme='cyan']:border-cyan-900/50` 
+          ? `bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border-b border-gray-200 dark:[data-theme='green']:border-emerald-900/50 dark:[data-theme='orange']:border-orange-900/50 dark:[data-theme='cyan']:border-cyan-900/50` 
           : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -698,19 +708,18 @@ function ProjectDetail() {
             <Link to="/" className="text-xl font-bold gradient-text hover:opacity-80 transition-opacity">Portfolio</Link>
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex space-x-6 lg:space-x-8">
-                <a href="/#home" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.home}</a>
-                <a href="/#about" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.about}</a>
-                <a href="/#skills" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.skills}</a>
-                <a href="/#experience" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.experience}</a>
-                <a href="/#projects" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.projects}</a>
-                <a href="/#contact" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.contact}</a>
+                <a href="/#home" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.home}</a>
+                <a href="/#about" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.about}</a>
+                <a href="/#skills" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.skills}</a>
+                <a href="/#experience" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.experience}</a>
+                <a href="/#projects" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.projects}</a>
+                <a href="/#contact" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.contact}</a>
               </div>
               <div className="flex items-center space-x-2">
-                {isDarkMode && (
-                  <div className="relative theme-menu-container">
+                <div className="relative theme-menu-container">
                     <button
                       onClick={() => setShowThemeMenu(!showThemeMenu)}
-                      className="p-2 rounded-full bg-gray-200 dark:bg-slate-700 dark:[data-theme='purple']:bg-purple-900/50 dark:[data-theme='green']:bg-emerald-900/50 dark:[data-theme='orange']:bg-orange-900/50 dark:[data-theme='pink']:bg-pink-900/50 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 dark:[data-theme='purple']:hover:bg-purple-800/60 dark:[data-theme='green']:hover:bg-emerald-800/60 dark:[data-theme='orange']:hover:bg-orange-800/60 dark:[data-theme='pink']:hover:bg-pink-800/60 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
+                      className="p-2 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
                       aria-label="Choose theme"
                       title="Vybrať farebnú tému"
                     >
@@ -719,15 +728,15 @@ function ProjectDetail() {
                       </svg>
                     </button>
                     {showThemeMenu && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 dark:[data-theme='purple']:bg-slate-800 dark:[data-theme='green']:bg-slate-800 dark:[data-theme='orange']:bg-slate-800 dark:[data-theme='pink']:bg-slate-800 dark:[data-theme='cyan']:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 dark:[data-theme='purple']:border-purple-800/50 dark:[data-theme='green']:border-emerald-800/50 dark:[data-theme='orange']:border-orange-800/50 dark:[data-theme='pink']:border-pink-800/50 dark:[data-theme='cyan']:border-cyan-800/50 py-2 z-50">
+                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 dark:[data-theme='green']:bg-slate-800 dark:[data-theme='orange']:bg-slate-800 dark:[data-theme='cyan']:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 dark:[data-theme='green']:border-emerald-800/50 dark:[data-theme='orange']:border-orange-800/50 dark:[data-theme='cyan']:border-cyan-800/50 py-2 z-50">
                         <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase">Farebné témy</div>
                         {Object.keys(darkThemes).map((themeName) => (
                           <button
                             key={themeName}
                             onClick={() => changeDarkTheme(themeName)}
-                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 dark:[data-theme='purple']:hover:bg-purple-900/30 dark:[data-theme='green']:hover:bg-emerald-900/30 dark:[data-theme='orange']:hover:bg-orange-900/30 dark:[data-theme='pink']:hover:bg-pink-900/30 dark:[data-theme='cyan']:hover:bg-cyan-900/30 transition-colors flex items-center justify-between ${
+                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 [data-theme='green']:hover:bg-emerald-50 dark:[data-theme='green']:hover:bg-emerald-900/30 [data-theme='orange']:hover:bg-orange-50 dark:[data-theme='orange']:hover:bg-orange-900/30 [data-theme='cyan']:hover:bg-cyan-50 dark:[data-theme='cyan']:hover:bg-cyan-900/30 transition-colors flex items-center justify-between ${
                               darkTheme === themeName 
-                                ? `bg-blue-50 dark:bg-slate-700 dark:[data-theme='purple']:bg-purple-900/40 dark:[data-theme='green']:bg-emerald-900/40 dark:[data-theme='orange']:bg-orange-900/40 dark:[data-theme='pink']:bg-pink-900/40 dark:[data-theme='cyan']:bg-cyan-900/40 text-blue-600 dark:text-blue-400 dark:[data-theme='purple']:text-purple-400 dark:[data-theme='green']:text-emerald-400 dark:[data-theme='orange']:text-orange-400 dark:[data-theme='pink']:text-pink-400 dark:[data-theme='cyan']:text-cyan-400` 
+                                ? `[data-theme='green']:bg-emerald-50 dark:[data-theme='green']:bg-emerald-900/40 [data-theme='orange']:bg-orange-50 dark:[data-theme='orange']:bg-orange-900/40 [data-theme='cyan']:bg-cyan-50 dark:[data-theme='cyan']:bg-cyan-900/40 [data-theme='green']:text-emerald-600 dark:[data-theme='green']:text-emerald-400 [data-theme='orange']:text-orange-600 dark:[data-theme='orange']:text-orange-400 [data-theme='cyan']:text-cyan-600 dark:[data-theme='cyan']:text-cyan-400` 
                                 : 'text-gray-700 dark:text-slate-300'
                             }`}
                           >
@@ -741,11 +750,10 @@ function ProjectDetail() {
                         ))}
                       </div>
                     )}
-                  </div>
-                )}
+                </div>
                 <button
                   onClick={toggleDarkMode}
-                  className="p-2.5 rounded-full bg-gray-200 dark:bg-slate-700 dark:[data-theme='purple']:bg-purple-900/50 dark:[data-theme='green']:bg-emerald-900/50 dark:[data-theme='orange']:bg-orange-900/50 dark:[data-theme='pink']:bg-pink-900/50 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-yellow-300 dark:[data-theme='purple']:text-purple-300 dark:[data-theme='green']:text-emerald-300 dark:[data-theme='orange']:text-orange-300 dark:[data-theme='pink']:text-pink-300 dark:[data-theme='cyan']:text-cyan-300 hover:bg-gray-300 dark:hover:bg-slate-600 dark:[data-theme='purple']:hover:bg-purple-800/60 dark:[data-theme='green']:hover:bg-emerald-800/60 dark:[data-theme='orange']:hover:bg-orange-800/60 dark:[data-theme='pink']:hover:bg-pink-800/60 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300 shadow-md hover:shadow-lg dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30"
+                  className="p-2.5 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-yellow-300 [data-theme='green']:text-emerald-700 dark:[data-theme='green']:text-emerald-300 [data-theme='orange']:text-orange-700 dark:[data-theme='orange']:text-orange-300 [data-theme='cyan']:text-cyan-700 dark:[data-theme='cyan']:text-cyan-300 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300 shadow-md hover:shadow-lg [data-theme='green']:shadow-emerald-500/30 dark:[data-theme='green']:shadow-emerald-900/30 [data-theme='orange']:shadow-orange-500/30 dark:[data-theme='orange']:shadow-orange-900/30 [data-theme='cyan']:shadow-cyan-500/30 dark:[data-theme='cyan']:shadow-cyan-900/30"
                   aria-label="Toggle dark mode"
                   title={isDarkMode ? "Vypnúť dark mode" : "Zapnúť dark mode"}
                 >

@@ -160,22 +160,6 @@ const translations = {
 export { translations };
 
 const darkThemes = {
-  blue: {
-    bg: 'from-slate-900 via-indigo-950 to-slate-800',
-    card: 'bg-slate-800',
-    text: 'text-slate-200',
-    accent: 'indigo',
-    border: 'border-indigo-900/30',
-    shadow: 'shadow-indigo-900/20'
-  },
-  purple: {
-    bg: 'from-slate-900 via-purple-950 to-slate-800',
-    card: 'bg-slate-800',
-    text: 'text-slate-200',
-    accent: 'purple',
-    border: 'border-purple-900/30',
-    shadow: 'shadow-purple-900/20'
-  },
   green: {
     bg: 'from-slate-900 via-emerald-950 to-slate-800',
     card: 'bg-slate-800',
@@ -192,14 +176,6 @@ const darkThemes = {
     border: 'border-orange-900/30',
     shadow: 'shadow-orange-900/20'
   },
-  pink: {
-    bg: 'from-slate-900 via-pink-950 to-slate-800',
-    card: 'bg-slate-800',
-    text: 'text-slate-200',
-    accent: 'pink',
-    border: 'border-pink-900/30',
-    shadow: 'shadow-pink-900/20'
-  },
   cyan: {
     bg: 'from-slate-900 via-cyan-950 to-slate-800',
     card: 'bg-slate-800',
@@ -212,8 +188,22 @@ const darkThemes = {
 
 function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [darkTheme, setDarkTheme] = useState('blue');
+  // Initialize from localStorage immediately to prevent flash
+  const getInitialTheme = () => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      const savedDarkTheme = localStorage.getItem('darkTheme') || 'cyan';
+      return {
+        isDark: savedTheme === null ? true : savedTheme === 'dark',
+        theme: savedDarkTheme
+      };
+    }
+    return { isDark: true, theme: 'cyan' };
+  };
+
+  const initialTheme = getInitialTheme();
+  const [isDarkMode, setIsDarkMode] = useState(initialTheme.isDark);
+  const [darkTheme, setDarkTheme] = useState(initialTheme.theme);
   const [showThemeMenu, setShowThemeMenu] = useState(false);
   const [visibleSections, setVisibleSections] = useState(new Set(['home']));
   const scrollDirectionRef = useRef('down');
@@ -222,22 +212,19 @@ function HomePage() {
   const t = translations.en;
   const projects = getProjects('en');
 
+  // Set theme immediately on mount to prevent flash
   useEffect(() => {
-    // Načítať preferenciu z localStorage (defaultne light mode)
     const savedTheme = localStorage.getItem('theme');
-    const savedDarkTheme = localStorage.getItem('darkTheme') || 'blue';
-    const shouldBeDark = savedTheme === 'dark';
+    const savedDarkTheme = localStorage.getItem('darkTheme') || 'cyan';
+    const shouldBeDark = savedTheme === null ? true : savedTheme === 'dark';
     
-    setIsDarkMode(shouldBeDark);
-    setDarkTheme(savedDarkTheme);
-    
-    // Nastaviť triedy
+    // Nastaviť triedy okamžite
     if (shouldBeDark) {
       document.documentElement.classList.add('dark');
       document.documentElement.setAttribute('data-theme', savedDarkTheme);
     } else {
       document.documentElement.classList.remove('dark');
-      document.documentElement.removeAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', savedDarkTheme);
     }
   }, []);
 
@@ -251,7 +238,7 @@ function HomePage() {
       localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      document.documentElement.removeAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', darkTheme);
       localStorage.setItem('theme', 'light');
     }
   };
@@ -259,301 +246,352 @@ function HomePage() {
   const changeDarkTheme = (themeName) => {
     setDarkTheme(themeName);
     localStorage.setItem('darkTheme', themeName);
-    if (isDarkMode) {
-      document.documentElement.setAttribute('data-theme', themeName);
-    }
+    // Aplikovať tému aj v light mode
+    document.documentElement.setAttribute('data-theme', themeName);
     setShowThemeMenu(false);
   };
 
-  // Aktualizovať data-theme pri zmene darkTheme
+  // Aktualizovať data-theme pri zmene darkTheme - vždy, aj v light mode
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.setAttribute('data-theme', darkTheme);
-    }
+    document.documentElement.setAttribute('data-theme', darkTheme);
   }, [darkTheme, isDarkMode]);
 
   // Helper funkcie pre dynamické triedy podľa témy
   const getThemeClasses = {
     // Progress bar gradient
     progressGradient: () => {
-      if (!isDarkMode) return 'bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500';
+      if (!isDarkMode) {
+        const gradients = {
+          green: 'bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500',
+          orange: 'bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500',
+          cyan: 'bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500'
+        };
+        return gradients[darkTheme] || gradients.cyan;
+      }
       const gradients = {
-        blue: 'bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400',
-        purple: 'bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400',
         green: 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400',
         orange: 'bg-gradient-to-r from-orange-400 via-red-400 to-orange-400',
-        pink: 'bg-gradient-to-r from-pink-400 via-rose-400 to-pink-400',
         cyan: 'bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400'
       };
-      return gradients[darkTheme] || gradients.blue;
+      return gradients[darkTheme] || gradients.cyan;
     },
     // Button gradient
     buttonGradient: () => {
-      if (!isDarkMode) return 'bg-gradient-to-r from-blue-600 to-indigo-600';
+      if (!isDarkMode) {
+        const gradients = {
+          green: 'bg-gradient-to-r from-emerald-600 to-teal-600',
+          orange: 'bg-gradient-to-r from-orange-600 to-amber-600',
+          cyan: 'bg-gradient-to-r from-cyan-600 to-blue-600'
+        };
+        return gradients[darkTheme] || gradients.cyan;
+      }
       const gradients = {
-        blue: 'bg-gradient-to-r from-blue-500 to-purple-600',
-        purple: 'bg-gradient-to-r from-purple-500 to-pink-600',
         green: 'bg-gradient-to-r from-emerald-500 to-teal-600',
         orange: 'bg-gradient-to-r from-orange-500 to-red-600',
-        pink: 'bg-gradient-to-r from-pink-500 to-rose-600',
         cyan: 'bg-gradient-to-r from-cyan-500 to-blue-600'
       };
-      return gradients[darkTheme] || gradients.blue;
+      return gradients[darkTheme] || gradients.cyan;
     },
     // Text color
     textColor: () => {
-      if (!isDarkMode) return 'text-blue-600';
+      if (!isDarkMode) {
+        const colors = {
+          green: 'text-emerald-600',
+          orange: 'text-orange-600',
+          cyan: 'text-cyan-600'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
       const colors = {
-        blue: 'text-blue-400',
-        purple: 'text-purple-400',
         green: 'text-emerald-400',
         orange: 'text-orange-400',
-        pink: 'text-pink-400',
         cyan: 'text-cyan-400'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     // Border color
     borderColor: () => {
-      if (!isDarkMode) return 'border-blue-600';
+      if (!isDarkMode) {
+        const colors = {
+          green: 'border-emerald-600',
+          orange: 'border-orange-600',
+          cyan: 'border-cyan-600'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
       const colors = {
-        blue: 'border-blue-400',
-        purple: 'border-purple-400',
         green: 'border-emerald-400',
         orange: 'border-orange-400',
-        pink: 'border-pink-400',
         cyan: 'border-cyan-400'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     // Shadow color
     shadowColor: () => {
-      if (!isDarkMode) return 'hover:shadow-blue-500/50';
+      if (!isDarkMode) {
+        const shadows = {
+          green: 'hover:shadow-emerald-500/50',
+          orange: 'hover:shadow-orange-500/50',
+          cyan: 'hover:shadow-cyan-500/50'
+        };
+        return shadows[darkTheme] || shadows.cyan;
+      }
       const shadows = {
-        blue: 'hover:shadow-purple-500/50',
-        purple: 'hover:shadow-pink-500/50',
         green: 'hover:shadow-emerald-500/50',
         orange: 'hover:shadow-orange-500/50',
-        pink: 'hover:shadow-pink-500/50',
         cyan: 'hover:shadow-cyan-500/50'
       };
-      return shadows[darkTheme] || shadows.blue;
+      return shadows[darkTheme] || shadows.cyan;
     },
     // Hover text color
     hoverTextColor: () => {
-      if (!isDarkMode) return 'hover:text-indigo-600';
+      if (!isDarkMode) {
+        const colors = {
+          green: 'hover:text-emerald-600',
+          orange: 'hover:text-orange-600',
+          cyan: 'hover:text-cyan-600'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
       const colors = {
-        blue: 'hover:text-purple-400',
-        purple: 'hover:text-pink-400',
         green: 'hover:text-teal-400',
         orange: 'hover:text-red-400',
-        pink: 'hover:text-rose-400',
         cyan: 'hover:text-blue-400'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     // Badge background
     badgeBg: () => {
-      if (!isDarkMode) return 'bg-blue-100';
+      if (!isDarkMode) {
+        const backgrounds = {
+          green: 'bg-emerald-100',
+          orange: 'bg-orange-100',
+          cyan: 'bg-cyan-100'
+        };
+        return backgrounds[darkTheme] || backgrounds.cyan;
+      }
       const backgrounds = {
-        blue: 'bg-indigo-900/60',
-        purple: 'bg-purple-900/60',
         green: 'bg-emerald-900/60',
         orange: 'bg-orange-900/60',
-        pink: 'bg-pink-900/60',
         cyan: 'bg-cyan-900/60'
       };
-      return backgrounds[darkTheme] || backgrounds.blue;
+      return backgrounds[darkTheme] || backgrounds.cyan;
     },
     // Badge text
     badgeText: () => {
-      if (!isDarkMode) return 'text-blue-700';
+      if (!isDarkMode) {
+        const colors = {
+          green: 'text-emerald-700',
+          orange: 'text-orange-700',
+          cyan: 'text-cyan-700'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
       const colors = {
-        blue: 'text-blue-300',
-        purple: 'text-purple-300',
         green: 'text-emerald-300',
         orange: 'text-orange-300',
-        pink: 'text-pink-300',
         cyan: 'text-cyan-300'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     // Badge border
     badgeBorder: () => {
-      if (!isDarkMode) return 'border-blue-200';
+      if (!isDarkMode) {
+        const borders = {
+          green: 'border-emerald-200',
+          orange: 'border-orange-200',
+          cyan: 'border-cyan-200'
+        };
+        return borders[darkTheme] || borders.cyan;
+      }
       const borders = {
-        blue: 'border-indigo-700/50',
-        purple: 'border-purple-700/50',
         green: 'border-emerald-700/50',
         orange: 'border-orange-700/50',
-        pink: 'border-pink-700/50',
         cyan: 'border-cyan-700/50'
       };
-      return borders[darkTheme] || borders.blue;
+      return borders[darkTheme] || borders.cyan;
     },
     // Card shadow
     cardShadow: () => {
-      if (!isDarkMode) return 'shadow-lg';
+      if (!isDarkMode) {
+        const shadows = {
+          green: 'shadow-emerald-500/20',
+          orange: 'shadow-orange-500/20',
+          cyan: 'shadow-cyan-500/20'
+        };
+        return shadows[darkTheme] || shadows.cyan;
+      }
       const shadows = {
-        blue: 'shadow-indigo-900/20',
-        purple: 'shadow-purple-900/20',
         green: 'shadow-emerald-900/20',
         orange: 'shadow-orange-900/20',
-        pink: 'shadow-pink-900/20',
         cyan: 'shadow-cyan-900/20'
       };
-      return shadows[darkTheme] || shadows.blue;
+      return shadows[darkTheme] || shadows.cyan;
     },
     // Card border
     cardBorder: () => {
-      if (!isDarkMode) return 'border-gray-100';
+      if (!isDarkMode) {
+        const borders = {
+          green: 'border border-emerald-200',
+          orange: 'border border-orange-200',
+          cyan: 'border border-cyan-200'
+        };
+        return borders[darkTheme] || borders.cyan;
+      }
       const borders = {
-        blue: 'border-indigo-900/30',
-        purple: 'border-purple-900/30',
-        green: 'border-emerald-900/30',
-        orange: 'border-orange-900/30',
-        pink: 'border-pink-900/30',
-        cyan: 'border-cyan-900/30'
+        green: 'border border-emerald-900/30',
+        orange: 'border border-orange-900/30',
+        cyan: 'border border-cyan-900/30'
       };
-      return `border-gray-100 dark:${borders[darkTheme] || borders.blue}`;
+      return borders[darkTheme] || borders.cyan;
     },
     // Icon gradient
     iconGradient: () => {
-      if (!isDarkMode) return 'bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500';
+      if (!isDarkMode) {
+        const gradients = {
+          green: 'bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-500',
+          orange: 'bg-gradient-to-br from-orange-500 via-amber-500 to-orange-500',
+          cyan: 'bg-gradient-to-br from-cyan-500 via-blue-500 to-cyan-500'
+        };
+        return gradients[darkTheme] || gradients.cyan;
+      }
       const gradients = {
-        blue: 'bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-400',
-        purple: 'bg-gradient-to-br from-purple-400 via-pink-400 to-purple-400',
         green: 'bg-gradient-to-br from-emerald-400 via-teal-400 to-emerald-400',
         orange: 'bg-gradient-to-br from-orange-400 via-red-400 to-orange-400',
-        pink: 'bg-gradient-to-br from-pink-400 via-rose-400 to-pink-400',
         cyan: 'bg-gradient-to-br from-cyan-400 via-blue-400 to-cyan-400'
       };
-      return gradients[darkTheme] || gradients.blue;
+      return gradients[darkTheme] || gradients.cyan;
     },
     // Icon shadow
     iconShadow: () => {
-      if (!isDarkMode) return 'shadow-lg';
+      if (!isDarkMode) {
+        const shadows = {
+          green: 'shadow-emerald-500/50',
+          orange: 'shadow-orange-500/50',
+          cyan: 'shadow-cyan-500/50'
+        };
+        return shadows[darkTheme] || shadows.cyan;
+      }
       const shadows = {
-        blue: 'shadow-indigo-500/50',
-        purple: 'shadow-purple-500/50',
         green: 'shadow-emerald-500/50',
         orange: 'shadow-orange-500/50',
-        pink: 'shadow-pink-500/50',
         cyan: 'shadow-cyan-500/50'
       };
-      return `shadow-lg dark:${shadows[darkTheme] || shadows.blue}`;
+      return shadows[darkTheme] || shadows.cyan;
     },
     // Tech badge background
     techBadgeBg: () => {
       if (!isDarkMode) {
       const backgrounds = {
-          blue: 'bg-blue-100',
-          purple: 'bg-purple-100',
           green: 'bg-emerald-100',
           orange: 'bg-orange-100',
-          pink: 'bg-pink-100',
           cyan: 'bg-cyan-100'
         };
-        return backgrounds[darkTheme] || backgrounds.blue;
+        return backgrounds[darkTheme] || backgrounds.cyan;
       }
       const backgrounds = {
-        blue: 'bg-indigo-900/60',
-        purple: 'bg-purple-900/60',
         green: 'bg-emerald-900/60',
         orange: 'bg-orange-900/60',
-        pink: 'bg-pink-900/60',
         cyan: 'bg-cyan-900/60'
       };
-      return backgrounds[darkTheme] || backgrounds.blue;
+      return backgrounds[darkTheme] || backgrounds.cyan;
     },
     // Tech badge text
     techBadgeText: () => {
       if (!isDarkMode) {
         const colors = {
-          blue: 'text-blue-700',
-          purple: 'text-purple-700',
           green: 'text-emerald-700',
           orange: 'text-orange-700',
-          pink: 'text-pink-700',
           cyan: 'text-cyan-700'
         };
-        return colors[darkTheme] || colors.blue;
+        return colors[darkTheme] || colors.cyan;
       }
       const colors = {
-        blue: 'text-blue-300',
-        purple: 'text-purple-300',
         green: 'text-emerald-300',
         orange: 'text-orange-300',
-        pink: 'text-pink-300',
         cyan: 'text-cyan-300'
       };
-      return colors[darkTheme] || colors.blue;
+      return colors[darkTheme] || colors.cyan;
     },
     // Tech badge border
     techBadgeBorder: () => {
       if (!isDarkMode) {
       const borders = {
-          blue: 'border-blue-200',
-          purple: 'border-purple-200',
           green: 'border-emerald-200',
           orange: 'border-orange-200',
-          pink: 'border-pink-200',
           cyan: 'border-cyan-200'
         };
-        return borders[darkTheme] || borders.blue;
+        return borders[darkTheme] || borders.cyan;
       }
       const borders = {
-        blue: 'border-indigo-700/50',
-        purple: 'border-purple-700/50',
         green: 'border-emerald-700/50',
         orange: 'border-orange-700/50',
-        pink: 'border-pink-700/50',
         cyan: 'border-cyan-700/50'
       };
-      return borders[darkTheme] || borders.blue;
+      return borders[darkTheme] || borders.cyan;
     },
     // Percentage text color
     percentText: () => {
-      if (!isDarkMode) return 'text-gray-500';
+      if (!isDarkMode) {
+        const colors = {
+          green: 'text-emerald-600',
+          orange: 'text-orange-600',
+          cyan: 'text-cyan-600'
+        };
+        return colors[darkTheme] || colors.cyan;
+      }
       const colors = {
-        blue: 'text-blue-400',
-        purple: 'text-purple-400',
         green: 'text-emerald-400',
         orange: 'text-orange-400',
-        pink: 'text-pink-400',
         cyan: 'text-cyan-400'
       };
-      return `text-gray-500 dark:${colors[darkTheme] || colors.blue}`;
+      return colors[darkTheme] || colors.cyan;
     },
     // Education card gradient
     educationCardGradient: () => {
       if (!isDarkMode) {
-        return 'bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600';
+        const gradients = {
+          green: 'bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-600',
+          orange: 'bg-gradient-to-br from-orange-500 via-amber-600 to-orange-600',
+          cyan: 'bg-gradient-to-br from-cyan-500 via-blue-600 to-cyan-600'
+        };
+        return gradients[darkTheme] || gradients.cyan;
       }
       const gradients = {
-        blue: 'bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-700',
-        purple: 'bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700',
         green: 'bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700',
         orange: 'bg-gradient-to-br from-orange-600 via-red-600 to-orange-700',
-        pink: 'bg-gradient-to-br from-pink-600 via-rose-600 to-pink-700',
         cyan: 'bg-gradient-to-br from-cyan-600 via-blue-600 to-cyan-700'
       };
-      return gradients[darkTheme] || gradients.blue;
+      return gradients[darkTheme] || gradients.cyan;
     },
     // Education card border
     educationCardBorder: () => {
       if (!isDarkMode) {
-        return 'border-blue-400/20';
+        const borders = {
+          green: 'border-emerald-400/30',
+          orange: 'border-orange-400/30',
+          cyan: 'border-cyan-400/30'
+        };
+        return borders[darkTheme] || borders.cyan;
       }
       const borders = {
-        blue: 'border-indigo-500/30',
-        purple: 'border-purple-500/30',
         green: 'border-emerald-500/30',
         orange: 'border-orange-500/30',
-        pink: 'border-pink-500/30',
         cyan: 'border-cyan-500/30'
       };
-      return borders[darkTheme] || borders.blue;
+      return borders[darkTheme] || borders.cyan;
+    },
+    // Hover background for buttons
+    hoverBg: () => {
+      if (!isDarkMode) {
+        const backgrounds = {
+          green: 'hover:bg-emerald-50',
+          orange: 'hover:bg-orange-50',
+          cyan: 'hover:bg-cyan-50'
+        };
+        return backgrounds[darkTheme] || backgrounds.cyan;
+      }
+      return 'dark:hover:bg-slate-700';
     }
   };
 
@@ -661,7 +699,7 @@ function HomePage() {
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled 
-          ? `bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-indigo-900/50 dark:[data-theme='purple']:border-purple-900/50 dark:[data-theme='green']:border-emerald-900/50 dark:[data-theme='orange']:border-orange-900/50 dark:[data-theme='pink']:border-pink-900/50 dark:[data-theme='cyan']:border-cyan-900/50` 
+          ? `bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border-b border-gray-200 dark:[data-theme='green']:border-emerald-900/50 dark:[data-theme='orange']:border-orange-900/50 dark:[data-theme='cyan']:border-cyan-900/50` 
           : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -669,19 +707,18 @@ function HomePage() {
             <Link to="/" className="text-xl font-bold gradient-text hover:opacity-80 transition-opacity">Portfolio</Link>
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex space-x-6 lg:space-x-8">
-                <a href="#home" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.home}</a>
-                <a href="#about" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.about}</a>
-                <a href="#skills" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.skills}</a>
-                <a href="#experience" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.experience}</a>
-                <a href="#projects" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.projects}</a>
-                <a href="#contact" className="text-gray-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 dark:[data-theme='purple']:hover:text-purple-400 dark:[data-theme='green']:hover:text-emerald-400 dark:[data-theme='orange']:hover:text-orange-400 dark:[data-theme='pink']:hover:text-pink-400 dark:[data-theme='cyan']:hover:text-cyan-400 transition-colors font-medium">{t.nav.contact}</a>
+                <a href="#home" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.home}</a>
+                <a href="#about" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.about}</a>
+                <a href="#skills" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.skills}</a>
+                <a href="#experience" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.experience}</a>
+                <a href="#projects" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.projects}</a>
+                <a href="#contact" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.contact}</a>
               </div>
               <div className="flex items-center space-x-2">
-                {isDarkMode && (
-                  <div className="relative theme-menu-container">
+                <div className="relative theme-menu-container">
                     <button
                       onClick={() => setShowThemeMenu(!showThemeMenu)}
-                      className="p-2 rounded-full bg-gray-200 dark:bg-slate-700 dark:[data-theme='purple']:bg-purple-900/50 dark:[data-theme='green']:bg-emerald-900/50 dark:[data-theme='orange']:bg-orange-900/50 dark:[data-theme='pink']:bg-pink-900/50 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 dark:[data-theme='purple']:hover:bg-purple-800/60 dark:[data-theme='green']:hover:bg-emerald-800/60 dark:[data-theme='orange']:hover:bg-orange-800/60 dark:[data-theme='pink']:hover:bg-pink-800/60 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
+                      className="p-2 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
                       aria-label="Choose theme"
                       title="Vybrať farebnú tému"
                     >
@@ -690,15 +727,15 @@ function HomePage() {
                       </svg>
                     </button>
                     {showThemeMenu && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 dark:[data-theme='purple']:bg-slate-800 dark:[data-theme='green']:bg-slate-800 dark:[data-theme='orange']:bg-slate-800 dark:[data-theme='pink']:bg-slate-800 dark:[data-theme='cyan']:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 dark:[data-theme='purple']:border-purple-800/50 dark:[data-theme='green']:border-emerald-800/50 dark:[data-theme='orange']:border-orange-800/50 dark:[data-theme='pink']:border-pink-800/50 dark:[data-theme='cyan']:border-cyan-800/50 py-2 z-50">
+                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 dark:[data-theme='green']:bg-slate-800 dark:[data-theme='orange']:bg-slate-800 dark:[data-theme='cyan']:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 dark:[data-theme='green']:border-emerald-800/50 dark:[data-theme='orange']:border-orange-800/50 dark:[data-theme='cyan']:border-cyan-800/50 py-2 z-50">
                         <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase">Farebné témy</div>
                         {Object.keys(darkThemes).map((themeName) => (
                           <button
                             key={themeName}
                             onClick={() => changeDarkTheme(themeName)}
-                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 dark:[data-theme='purple']:hover:bg-purple-900/30 dark:[data-theme='green']:hover:bg-emerald-900/30 dark:[data-theme='orange']:hover:bg-orange-900/30 dark:[data-theme='pink']:hover:bg-pink-900/30 dark:[data-theme='cyan']:hover:bg-cyan-900/30 transition-colors flex items-center justify-between ${
+                            className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 [data-theme='green']:hover:bg-emerald-50 dark:[data-theme='green']:hover:bg-emerald-900/30 [data-theme='orange']:hover:bg-orange-50 dark:[data-theme='orange']:hover:bg-orange-900/30 [data-theme='cyan']:hover:bg-cyan-50 dark:[data-theme='cyan']:hover:bg-cyan-900/30 transition-colors flex items-center justify-between ${
                               darkTheme === themeName 
-                                ? `bg-blue-50 dark:bg-slate-700 dark:[data-theme='purple']:bg-purple-900/40 dark:[data-theme='green']:bg-emerald-900/40 dark:[data-theme='orange']:bg-orange-900/40 dark:[data-theme='pink']:bg-pink-900/40 dark:[data-theme='cyan']:bg-cyan-900/40 text-blue-600 dark:text-blue-400 dark:[data-theme='purple']:text-purple-400 dark:[data-theme='green']:text-emerald-400 dark:[data-theme='orange']:text-orange-400 dark:[data-theme='pink']:text-pink-400 dark:[data-theme='cyan']:text-cyan-400` 
+                                ? `[data-theme='green']:bg-emerald-50 dark:[data-theme='green']:bg-emerald-900/40 [data-theme='orange']:bg-orange-50 dark:[data-theme='orange']:bg-orange-900/40 [data-theme='cyan']:bg-cyan-50 dark:[data-theme='cyan']:bg-cyan-900/40 [data-theme='green']:text-emerald-600 dark:[data-theme='green']:text-emerald-400 [data-theme='orange']:text-orange-600 dark:[data-theme='orange']:text-orange-400 [data-theme='cyan']:text-cyan-600 dark:[data-theme='cyan']:text-cyan-400` 
                                 : 'text-gray-700 dark:text-slate-300'
                             }`}
                           >
@@ -712,11 +749,10 @@ function HomePage() {
                         ))}
                       </div>
                     )}
-                  </div>
-                )}
+                </div>
                 <button
                   onClick={toggleDarkMode}
-                  className="p-2.5 rounded-full bg-gray-200 dark:bg-slate-700 dark:[data-theme='purple']:bg-purple-900/50 dark:[data-theme='green']:bg-emerald-900/50 dark:[data-theme='orange']:bg-orange-900/50 dark:[data-theme='pink']:bg-pink-900/50 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-yellow-300 dark:[data-theme='purple']:text-purple-300 dark:[data-theme='green']:text-emerald-300 dark:[data-theme='orange']:text-orange-300 dark:[data-theme='pink']:text-pink-300 dark:[data-theme='cyan']:text-cyan-300 hover:bg-gray-300 dark:hover:bg-slate-600 dark:[data-theme='purple']:hover:bg-purple-800/60 dark:[data-theme='green']:hover:bg-emerald-800/60 dark:[data-theme='orange']:hover:bg-orange-800/60 dark:[data-theme='pink']:hover:bg-pink-800/60 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300 shadow-md hover:shadow-lg dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30"
+                  className="p-2.5 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-yellow-300 [data-theme='green']:text-emerald-700 dark:[data-theme='green']:text-emerald-300 [data-theme='orange']:text-orange-700 dark:[data-theme='orange']:text-orange-300 [data-theme='cyan']:text-cyan-700 dark:[data-theme='cyan']:text-cyan-300 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300 shadow-md hover:shadow-lg [data-theme='green']:shadow-emerald-500/30 dark:[data-theme='green']:shadow-emerald-900/30 [data-theme='orange']:shadow-orange-500/30 dark:[data-theme='orange']:shadow-orange-900/30 [data-theme='cyan']:shadow-cyan-500/30 dark:[data-theme='cyan']:shadow-cyan-900/30"
                   aria-label="Toggle dark mode"
                   title={isDarkMode ? "Vypnúť dark mode" : "Zapnúť dark mode"}
                 >
@@ -759,7 +795,7 @@ function HomePage() {
             </a>
             <a 
               href="#contact" 
-              className={`px-8 py-3 bg-white dark:bg-slate-800 ${getThemeClasses.textColor()} border-2 ${getThemeClasses.borderColor()} rounded-full font-semibold hover:bg-blue-50 dark:hover:bg-slate-700 transition-all duration-300 shadow-md dark:${getThemeClasses.cardShadow()}`}
+              className={`px-8 py-3 bg-white dark:bg-slate-800 ${getThemeClasses.textColor()} border-2 ${getThemeClasses.borderColor()} rounded-full font-semibold ${getThemeClasses.hoverBg()} transition-all duration-300 shadow-md ${getThemeClasses.cardShadow()}`}
             >
               {t.hero.contactMe}
             </a>
@@ -783,11 +819,11 @@ function HomePage() {
             <div className={`${getThemeClasses.educationCardGradient()} rounded-3xl p-8 md:p-10 text-white shadow-2xl border ${getThemeClasses.educationCardBorder()}`}>
               <h3 className="text-2xl md:text-3xl font-bold mb-4 md:mb-5">{t.about.education}</h3>
               <p className="text-lg md:text-xl mb-1 md:mb-2 font-semibold">{t.about.school}</p>
-              <p className="text-blue-100 dark:text-blue-200 dark:[data-theme='purple']:text-purple-200 dark:[data-theme='green']:text-emerald-200 dark:[data-theme='orange']:text-orange-200 dark:[data-theme='pink']:text-pink-200 dark:[data-theme='cyan']:text-cyan-200 mb-1">{t.about.field}</p>
-              <p className="text-sm text-blue-200 dark:text-blue-300 dark:[data-theme='purple']:text-purple-300 dark:[data-theme='green']:text-emerald-300 dark:[data-theme='orange']:text-orange-300 dark:[data-theme='pink']:text-pink-300 dark:[data-theme='cyan']:text-cyan-300 mb-4">{t.about.years}</p>
+              <p className="[data-theme='green']:text-emerald-100 dark:[data-theme='green']:text-emerald-200 [data-theme='orange']:text-orange-100 dark:[data-theme='orange']:text-orange-200 [data-theme='cyan']:text-cyan-100 dark:[data-theme='cyan']:text-cyan-200 mb-1">{t.about.field}</p>
+              <p className="text-sm [data-theme='green']:text-emerald-200 dark:[data-theme='green']:text-emerald-300 [data-theme='orange']:text-orange-200 dark:[data-theme='orange']:text-orange-300 [data-theme='cyan']:text-cyan-200 dark:[data-theme='cyan']:text-cyan-300 mb-4">{t.about.years}</p>
               <div className="mt-4 pt-4 border-t border-white/20">
                 <h4 className="text-lg font-semibold mb-2">{t.about.language}</h4>
-                <p className="text-sm text-blue-100 dark:text-blue-200 dark:[data-theme='purple']:text-purple-200 dark:[data-theme='green']:text-emerald-200 dark:[data-theme='orange']:text-orange-200 dark:[data-theme='pink']:text-pink-200 dark:[data-theme='cyan']:text-cyan-200">{t.about.english}</p>
+                <p className="text-sm [data-theme='green']:text-emerald-100 dark:[data-theme='green']:text-emerald-200 [data-theme='orange']:text-orange-100 dark:[data-theme='orange']:text-orange-200 [data-theme='cyan']:text-cyan-100 dark:[data-theme='cyan']:text-cyan-200">{t.about.english}</p>
               </div>
             </div>
           </div>
@@ -819,7 +855,7 @@ function HomePage() {
             <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-7 text-gray-800 dark:text-slate-200">{t.skills.softSkills}</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {softSkills.map((skill, idx) => (
-              <div key={idx} className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md dark:shadow-indigo-900/20 dark:[data-theme='purple']:shadow-purple-900/20 dark:[data-theme='green']:shadow-emerald-900/20 dark:[data-theme='orange']:shadow-orange-900/20 dark:[data-theme='pink']:shadow-pink-900/20 dark:[data-theme='cyan']:shadow-cyan-900/20 card-hover border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
+              <div key={idx} className={`bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md ${getThemeClasses.cardShadow()} card-hover ${getThemeClasses.cardBorder()}`}>
                   <h4 className="font-bold text-lg mb-2 text-gray-800 dark:text-slate-200">{skill.name}</h4>
                   <p className="text-gray-600 dark:text-slate-300 text-sm leading-relaxed">{skill.description.en}</p>
                 </div>
@@ -835,7 +871,7 @@ function HomePage() {
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 md:mb-12 gradient-text">{t.experience.title}</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {/* Slido */}
-            <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
+            <div className={`bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl ${getThemeClasses.cardShadow()} ${getThemeClasses.cardBorder()}`}>
               <div className="mb-4">
                 <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-slate-200">{t.experience.slido.company}</h3>
                 <span className={`inline-block px-3 py-1 ${getThemeClasses.badgeBg()} ${getThemeClasses.badgeText()} rounded-full text-xs font-semibold border ${getThemeClasses.badgeBorder()}`}>
@@ -866,7 +902,7 @@ function HomePage() {
             </div>
 
             {/* Titans Freelancers */}
-            <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
+            <div className={`bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl ${getThemeClasses.cardShadow()} ${getThemeClasses.cardBorder()}`}>
               <div className="mb-4">
                 <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-slate-200">{t.experience.titans.company}</h3>
                 <span className={`inline-block px-3 py-1 ${getThemeClasses.badgeBg()} ${getThemeClasses.badgeText()} rounded-full text-xs font-semibold border ${getThemeClasses.badgeBorder()}`}>
@@ -899,7 +935,7 @@ function HomePage() {
             {/* Extracurricular Activities - Subsection */}
             <div className="mt-12 md:mt-16 col-span-2">
               <h3 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-10 text-gray-800 dark:text-slate-200">{t.extracurricular.title}</h3>
-              <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-10 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
+              <div className={`bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-10 shadow-xl ${getThemeClasses.cardShadow()} ${getThemeClasses.cardBorder()}`}>
                 <h4 className="text-2xl font-bold mb-4 text-gray-800 dark:text-slate-200">{t.extracurricular.swimming}</h4>
                 <ul className="space-y-3 text-gray-700 dark:text-slate-300">
                   <li className="flex items-start">
@@ -945,9 +981,9 @@ function HomePage() {
             {projects.map((project, idx) => (
               <div 
                 key={idx} 
-                  className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg dark:shadow-indigo-900/20 dark:[data-theme='purple']:shadow-purple-900/20 dark:[data-theme='green']:shadow-emerald-900/20 dark:[data-theme='orange']:shadow-orange-900/20 dark:[data-theme='pink']:shadow-pink-900/20 dark:[data-theme='cyan']:shadow-cyan-900/20 card-hover group overflow-hidden relative border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30 w-[80vw] sm:w-[65vw] md:w-[50vw] lg:w-[38vw] xl:w-[30vw] flex-shrink-0"
+                  className={`bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg ${getThemeClasses.cardShadow()} card-hover group overflow-hidden relative ${getThemeClasses.cardBorder()} w-[80vw] sm:w-[65vw] md:w-[50vw] lg:w-[38vw] xl:w-[30vw] flex-shrink-0`}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-400 dark:from-blue-500 dark:via-indigo-500 dark:to-purple-500 dark:[data-theme='purple']:from-purple-500 dark:[data-theme='purple']:via-pink-500 dark:[data-theme='purple']:to-purple-500 dark:[data-theme='green']:from-emerald-500 dark:[data-theme='green']:via-teal-500 dark:[data-theme='green']:to-emerald-500 dark:[data-theme='orange']:from-orange-500 dark:[data-theme='orange']:via-red-500 dark:[data-theme='orange']:to-orange-500 dark:[data-theme='pink']:from-pink-500 dark:[data-theme='pink']:via-rose-500 dark:[data-theme='pink']:to-pink-500 dark:[data-theme='cyan']:from-cyan-500 dark:[data-theme='cyan']:via-blue-500 dark:[data-theme='cyan']:to-cyan-500 rounded-bl-full opacity-10 dark:opacity-20 group-hover:opacity-20 dark:group-hover:opacity-30 transition-opacity"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 [data-theme='green']:bg-gradient-to-br [data-theme='green']:from-emerald-400 [data-theme='green']:via-teal-400 [data-theme='green']:to-emerald-400 dark:[data-theme='green']:from-emerald-500 dark:[data-theme='green']:via-teal-500 dark:[data-theme='green']:to-emerald-500 [data-theme='orange']:bg-gradient-to-br [data-theme='orange']:from-orange-400 [data-theme='orange']:via-amber-400 [data-theme='orange']:to-orange-400 dark:[data-theme='orange']:from-orange-500 dark:[data-theme='orange']:via-red-500 dark:[data-theme='orange']:to-orange-500 [data-theme='cyan']:bg-gradient-to-br [data-theme='cyan']:from-cyan-400 [data-theme='cyan']:via-blue-400 [data-theme='cyan']:to-cyan-400 dark:[data-theme='cyan']:from-cyan-500 dark:[data-theme='cyan']:via-blue-500 dark:[data-theme='cyan']:to-cyan-500 rounded-bl-full opacity-10 dark:opacity-20 group-hover:opacity-20 dark:group-hover:opacity-30 transition-opacity"></div>
                 <div className="relative z-10">
                   <div className="mb-3">
                     <span className={`px-3 py-1 ${getThemeClasses.badgeBg()} ${getThemeClasses.badgeText()} rounded-full text-xs font-semibold border ${getThemeClasses.badgeBorder()}`}>
@@ -990,7 +1026,7 @@ function HomePage() {
           <p className="text-center text-gray-600 dark:text-slate-300 mb-12 text-lg">
             {t.contact.description}
           </p>
-          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 shadow-xl dark:shadow-indigo-900/30 dark:[data-theme='purple']:shadow-purple-900/30 dark:[data-theme='green']:shadow-emerald-900/30 dark:[data-theme='orange']:shadow-orange-900/30 dark:[data-theme='pink']:shadow-pink-900/30 dark:[data-theme='cyan']:shadow-cyan-900/30 border border-gray-100 dark:border-indigo-900/30 dark:[data-theme='purple']:border-purple-900/30 dark:[data-theme='green']:border-emerald-900/30 dark:[data-theme='orange']:border-orange-900/30 dark:[data-theme='pink']:border-pink-900/30 dark:[data-theme='cyan']:border-cyan-900/30">
+          <div className={`bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 shadow-xl ${getThemeClasses.cardShadow()} ${getThemeClasses.cardBorder()}`}>
             <div className="grid md:grid-cols-2 gap-8 text-center">
               <div className="group">
                 <div className={`w-16 h-16 ${getThemeClasses.iconGradient()} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform ${getThemeClasses.iconShadow()}`}>
@@ -1020,9 +1056,9 @@ function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 dark:bg-slate-900 dark:[data-theme='purple']:bg-slate-900 dark:[data-theme='green']:bg-slate-900 dark:[data-theme='orange']:bg-slate-900 dark:[data-theme='pink']:bg-slate-900 dark:[data-theme='cyan']:bg-slate-900 border-t border-gray-800 dark:border-indigo-900/50 dark:[data-theme='purple']:border-purple-900/50 dark:[data-theme='green']:border-emerald-900/50 dark:[data-theme='orange']:border-orange-900/50 dark:[data-theme='pink']:border-pink-900/50 dark:[data-theme='cyan']:border-cyan-900/50 text-white py-8">
+      <footer className="bg-gray-900 dark:bg-slate-900 dark:[data-theme='green']:bg-slate-900 dark:[data-theme='orange']:bg-slate-900 dark:[data-theme='cyan']:bg-slate-900 border-t border-gray-800 dark:[data-theme='green']:border-emerald-900/50 dark:[data-theme='orange']:border-orange-900/50 dark:[data-theme='cyan']:border-cyan-900/50 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400 dark:text-slate-400 dark:[data-theme='purple']:text-purple-300/70 dark:[data-theme='green']:text-emerald-300/70 dark:[data-theme='orange']:text-orange-300/70 dark:[data-theme='pink']:text-pink-300/70 dark:[data-theme='cyan']:text-cyan-300/70">
+          <p className="text-gray-400 dark:text-slate-400 dark:[data-theme='green']:text-emerald-300/70 dark:[data-theme='orange']:text-orange-300/70 dark:[data-theme='cyan']:text-cyan-300/70">
             © {new Date().getFullYear()} {t.hero.name}. {t.footer.rights}
           </p>
         </div>
