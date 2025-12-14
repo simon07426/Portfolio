@@ -256,6 +256,35 @@ function HomePage() {
     document.documentElement.setAttribute('data-theme', darkTheme);
   }, [darkTheme, isDarkMode]);
 
+  // Dynamicky meniť favicon podľa témy
+  useEffect(() => {
+    const faviconMap = {
+      green: '/favicon-green.svg',
+      orange: '/favicon-orange.svg',
+      cyan: '/favicon-cyan.svg'
+    };
+
+    const faviconPath = faviconMap[darkTheme] || faviconMap.cyan;
+    
+    // Nájsť existujúci favicon link
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    }
+    link.href = faviconPath;
+
+    // Aktualizovať aj apple-touch-icon
+    let appleLink = document.querySelector("link[rel~='apple-touch-icon']");
+    if (!appleLink) {
+      appleLink = document.createElement('link');
+      appleLink.rel = 'apple-touch-icon';
+      document.getElementsByTagName('head')[0].appendChild(appleLink);
+    }
+    appleLink.href = faviconPath;
+  }, [darkTheme]);
+
   // Helper funkcie pre dynamické triedy podľa témy
   const getThemeClasses = {
     // Progress bar gradient
@@ -442,6 +471,23 @@ function HomePage() {
         green: 'border border-emerald-900/30',
         orange: 'border border-orange-900/30',
         cyan: 'border border-cyan-900/30'
+      };
+      return borders[darkTheme] || borders.cyan;
+    },
+    // Nav border
+    navBorder: () => {
+      if (!isDarkMode) {
+        const borders = {
+          green: 'border-b border-emerald-200',
+          orange: 'border-b border-orange-200',
+          cyan: 'border-b border-cyan-200'
+        };
+        return borders[darkTheme] || borders.cyan;
+      }
+      const borders = {
+        green: 'border-b border-emerald-900/50',
+        orange: 'border-b border-orange-900/50',
+        cyan: 'border-b border-cyan-900/50'
       };
       return borders[darkTheme] || borders.cyan;
     },
@@ -699,7 +745,7 @@ function HomePage() {
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled 
-          ? `bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border-b border-gray-200 dark:[data-theme='green']:border-emerald-900/50 dark:[data-theme='orange']:border-orange-900/50 dark:[data-theme='cyan']:border-cyan-900/50` 
+          ? `bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg ${getThemeClasses.navBorder()}` 
           : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

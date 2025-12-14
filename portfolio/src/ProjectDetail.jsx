@@ -439,6 +439,35 @@ function ProjectDetail() {
     document.documentElement.setAttribute('data-theme', darkTheme);
   }, [darkTheme, isDarkMode]);
 
+  // Dynamicky meniť favicon podľa témy
+  useEffect(() => {
+    const faviconMap = {
+      green: '/favicon-green.svg',
+      orange: '/favicon-orange.svg',
+      cyan: '/favicon-cyan.svg'
+    };
+
+    const faviconPath = faviconMap[darkTheme] || faviconMap.cyan;
+    
+    // Nájsť existujúci favicon link
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    }
+    link.href = faviconPath;
+
+    // Aktualizovať aj apple-touch-icon
+    let appleLink = document.querySelector("link[rel~='apple-touch-icon']");
+    if (!appleLink) {
+      appleLink = document.createElement('link');
+      appleLink.rel = 'apple-touch-icon';
+      document.getElementsByTagName('head')[0].appendChild(appleLink);
+    }
+    appleLink.href = faviconPath;
+  }, [darkTheme]);
+
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
