@@ -170,6 +170,9 @@
 @layer components {
   .gradient-text {
     @apply bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent;
+    line-height: 1.2;
+    padding-bottom: 0.1em;
+    overflow: visible;
   }
 
   /* Theme-specific gradient text for light mode */

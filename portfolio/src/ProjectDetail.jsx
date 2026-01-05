@@ -140,8 +140,8 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
     repositoryLink: 'https://gitlab.com/tomtom4465248/g-game',
     features: {
       sk: [
-        'Tímová spolupráca v tíme štyroch ľudí',
-        'Rotácia vedúcich rolí v tíme',
+        'Vývoj hry v tíme štyroch ľudí',
+        'Rotácia vedúcej role v tíme',
         'Git workflow s vetvami a merge requests',
         'Proces code review',
         'Riešenie konfliktov v Gite',
@@ -150,8 +150,8 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
         'Stavový stroj pre herné objekty'
       ],
       en: [
-        'Team collaboration in a team of four',
-        'Rotating leadership roles in the team',
+        'Game development in a team of four',
+        'Rotating leadership role in the team',
         'Git workflow with branches and merge requests',
         'Code review process',
         'Resolving Git conflicts',
@@ -166,18 +166,14 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
         'Riešenie konfliktov pri merge requests',
         'Komunikácia a synchronizácia zmien',
         'Rozdelenie úloh a zodpovedností',
-        'Udržiavanie konzistentného kódu v tíme',
-        'Zvládnutie Git workflow v tímovom prostredí',
-        'Integrácia rôznych častí hry od rôznych členov tímu'
+        'Udržiavanie konzistentného kódu v tíme'
       ],
       en: [
         'Coordinating work in a team of four',
         'Resolving conflicts in merge requests',
         'Communication and synchronization of changes',
         'Task distribution and responsibilities',
-        'Maintaining consistent code in a team',
-        'Mastering Git workflow in a team environment',
-        'Integrating different parts of the game from different team members'
+        'Maintaining consistent code in a team'
       ]
     },
     lessons: {
@@ -188,8 +184,7 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
         'Naučil som sa riešiť konflikty v Gite',
         'Získal som skúsenosti s rotáciou vedúcich rolí',
         'Zlepšil som svoje zručnosti v MonoGame a C#',
-        'Naučil som sa organizovať prácu v tíme a rozdeliť úlohy',
-        'Pochopil som dôležitosť verzovania kódu a best practices v Gite'
+        'Naučil som sa organizovať prácu v tíme a rozdeliť úlohy'
       ],
       en: [
         'I learned to collaborate effectively in a team using Git and GitLab',
@@ -198,8 +193,7 @@ The project uses MonoGame for rendering, game loop, and input management. We imp
         'I learned to resolve conflicts in Git',
         'I gained experience with rotating leadership roles',
         'I improved my skills in MonoGame and C#',
-        'I learned to organize work in a team and distribute tasks',
-        'I understood the importance of code versioning and Git best practices'
+        'I learned to organize work in a team and distribute tasks'
       ]
     },
     images: []
@@ -236,19 +230,15 @@ The project uses Chrome Extension Manifest V3, JavaScript for frontend logic, Fl
         'Automatická extrakcia mien a názvov firiem z LinkedIn stránok',
         'Podpora pre osobné profily aj firemné stránky',
         'Integrácia s databázou cez Flask API',
-        'Normalizácia textu (odstránenie diakritiky)',
         'Zobrazenie detailných informácií v popup okne',
-        'Chrome Extension Manifest V3',
-        'Zobrazenie dát z databázy v reálnom čase'
+        'Chrome Extension Manifest V3'
       ],
       en: [
         'Automatic extraction of names and company names from LinkedIn pages',
         'Support for both personal profiles and company pages',
         'Database integration via Flask API',
-        'Text normalization (removing diacritics)',
         'Display of detailed information in popup window',
-        'Chrome Extension Manifest V3',
-        'Real-time display of database data'
+        'Chrome Extension Manifest V3'
       ]
     },
     challenges: {
@@ -257,18 +247,14 @@ The project uses Chrome Extension Manifest V3, JavaScript for frontend logic, Fl
         'Integrácia Chrome rozšírenia s Flask backend API',
         'Normalizácia slovenských znakov pre vyhľadávanie',
         'Rozpoznanie typu stránky (osobný profil vs. firma)',
-        'Spracovanie viacerých výsledkov z databázy',
-        'Riešenie CORS medzi rozšírením a backend API',
-        'Spolupráca v tíme počas stáže'
+        'Spracovanie viacerých výsledkov z databázy'
       ],
       en: [
         'Extracting data from LinkedIn pages with different structures',
         'Integrating Chrome Extension with Flask backend API',
         'Normalizing Slovak characters for searching',
         'Recognizing page type (personal profile vs. company)',
-        'Processing multiple results from database',
-        'CORS handling between extension and backend API',
-        'Team collaboration during internship'
+        'Processing multiple results from database'
       ]
     },
     lessons: {
@@ -276,21 +262,15 @@ The project uses Chrome Extension Manifest V3, JavaScript for frontend logic, Fl
         'Naučil som sa vytvárať Chrome rozšírenia s Manifest V3',
         'Získal som skúsenosti s integráciou frontendu a backendu',
         'Pochopil som dôležitosť normalizácie textu v databázach',
-        'Naučil som sa pracovať s Chrome Extension API',
         'Získal som skúsenosti s vývojom Flask API',
-        'Zlepšil som svoje zručnosti v týmovej spolupráci',
-        'Pochopil som výzvy integrácie externých služieb (LinkedIn)',
-        'Naučil som sa riešiť CORS problémy v Chrome rozšíreniach'
+        'Zlepšil som svoje zručnosti v týmovej spolupráci'
       ],
       en: [
         'I learned to create Chrome extensions with Manifest V3',
         'I gained experience with frontend and backend integration',
         'I understood the importance of text normalization in databases',
-        'I learned to work with Chrome Extension API',
         'I gained experience with Flask API development',
-        'I improved my team collaboration skills',
-        'I understood the challenges of integrating external services (LinkedIn)',
-        'I learned to solve CORS issues in Chrome extensions'
+        'I improved my team collaboration skills'
       ]
     },
     images: []
@@ -366,20 +346,16 @@ The campaign was very successful - the goal was achieved at 162%, meaning we man
       sk: [
         'Naučil som sa pracovať s crowdfundingom a odmenovými balíčkami',
         'Získal som skúsenosti s marketingovými kampaňami',
-        'Pochopil som dôležitosť tímovej spolupráce a rozdelenia úloh',
         'Naučil som sa používať platformu StartLabe',
         'Získal som skúsenosti s komunikáciou so zákazníkmi',
-        'Pochopil som proces plánovania a realizácie crowdfundingovej kampane',
-        'Zlepšil som svoje zručnosti v ne-IT prostredí'
+        'Pochopil som proces plánovania a realizácie crowdfundingovej kampane'
       ],
       en: [
         'I learned to work with crowdfunding and reward packages',
         'I gained experience with marketing campaigns',
-        'I understood the importance of team collaboration and task division',
         'I learned to use StartLabe platform',
         'I gained experience with customer communication',
-        'I understood the process of planning and executing crowdfunding campaigns',
-        'I improved my skills in non-IT environment'
+        'I understood the process of planning and executing crowdfunding campaigns'
       ]
     },
     images: []
@@ -923,11 +899,7 @@ function ProjectDetail() {
                   rel="noopener noreferrer"
                   className={`px-6 py-3 ${getThemeClasses.buttonGradient()} text-white rounded-full font-semibold hover:shadow-lg transition-all duration-300 inline-flex items-center`}
                 >
-                  {isGitLab ? (
-                    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12.042 0L9.21 8.25H.375L6 12.75 3.168 21l8.874-6.375L20.916 21 18.084 12.75 23.71 8.25H14.875L12.042 0z"/>
-                    </svg>
-                  ) : (
+                  {isGitHub && (
                     <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482 3.97-1.32 6.833-5.08 6.833-9.503C22 6.515 17.522 2 12 2z" clipRule="evenodd"/>
                     </svg>
@@ -937,7 +909,15 @@ function ProjectDetail() {
               );
             })()}
             <button
-              onClick={() => navigate('/')}
+              onClick={() => {
+                navigate('/');
+                setTimeout(() => {
+                  const projectsSection = document.getElementById('projects');
+                  if (projectsSection) {
+                    projectsSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }, 100);
+              }}
               className={`px-6 py-3 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 border-2 ${getThemeClasses.borderColor()} rounded-full font-semibold hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-300`}
             >
               {t.projects.detail.backToProjects}

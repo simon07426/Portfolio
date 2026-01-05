@@ -41,19 +41,19 @@ const softSkills = [
   },
   {
     name: 'Time Management',
-    description: { sk: 'Vyvážil som školu, prácu na startupe a súťažné plávanie', en: 'Balanced school, startup work, and competitive swimming' }
+    description: { sk: 'Vyvážil som školu, prácu na startupe a súťažné plávanie', en: 'Balanced school and competitive swimming, with peak training reaching 12 sessions per week' }
   },
   {
     name: 'Discipline',
-    description: { sk: 'Trénoval som ako plavec viac než desať rokov počas štúdia', en: 'Trained as a swimmer for over 10 years while pursuing academics' }
+    description: { sk: 'Trénoval som ako plavec viac než desať rokov počas štúdia', en: 'Committed over a decade to competitive swimming while maintaining academic performance, developing discipline and a solid work ethic' }
   },
   {
     name: 'Problem Solving',
-    description: { sk: 'Vybudoval som kvízovú platformu na riešenie medzier v tréningu a testovaní', en: 'Built a quiz platform to address gaps in training and testing' }
+    description: { sk: 'Vybudoval som kvízovú platformu na riešenie medzier v tréningu a testovaní', en: 'Developed a quiz platform that turns long, tedious texts into efficient learning experiences, allowing students to spend more time on their passions' }
   },
   {
     name: 'Communication',
-    description: { sk: 'Vytvoril som prezentácie a koordinoval crowdfundingové kampane', en: 'Created pitches and coordinated crowdfunding outreach' }
+    description: { sk: 'Vytvoril som prezentácie a koordinoval crowdfundingové kampane', en: 'Developed pitches and presentations, coordinated crowdfunding campaigns, and collaborated effectively while taking on multiple roles within teams' }
   }
 ];
 
@@ -78,12 +78,13 @@ const translations = {
     about: {
       title: 'About me',
       text1: 'Motivated high school student with a strong interest in informatics and business. Co-founded a startup, completed industry internships, and built discipline through over 10 years of competitive swimming. Eager to apply problem solving and teamwork skills to real world tech and business challenges.',
-      text2: 'I specialize in web development, machine learning and data analysis. I enjoy learning new technologies and applying them in practical projects.',
+      text2: 'I enjoy learning new technologies and applying them in practical projects. I like taking on challenges that push me to grow and build new skills.',
       education: 'Education',
-      school: 'C.S. Lewis Lyceum',
+      school: 'C.S. Lewis Lyceum High School',
       field: 'Data Science & Programming',
       years: '2022-2026',
       language: 'Languages',
+      slovak: 'Slovak - Native',
       english: 'English - C1 Cambridge Certificate'
     },
     skills: {
@@ -97,17 +98,17 @@ const translations = {
         company: 'Slido',
         description: 'Slido is an audience interaction platform founded in Bratislava in 2012, which enhances engagement during meetings and events through live polls, Q&A sessions, and quizzes. The company was acquired by Cisco in 2021.',
         role: 'Internship',
-        desc1: 'Applied informatics knowledge to develop product features for the audience interaction platform.',
-        desc2: 'Collaborated with developers to improve internal tools based on user feedback.',
-        desc3: 'Worked on features for live polls and Q&A sessions that enhance user engagement.'
+        desc1: 'Developed AI-powered suggested hashtag codes for event registration based on event names.',
+        desc2: 'Integrated new features into existing codebase, demonstrating adaptability and attention to code quality and structure.',
+        desc3: 'Refined AI prompts through iterative testing and experimentation.'
       },
       titans: {
         company: 'Titans Freelancers',
         description: 'Titans Freelancers is a Slovak IT company founded in 2013 that connects IT freelancers with businesses seeking specialized expertise. They provide flexible IT solutions for various industries.',
         role: 'Internship',
-        desc1: 'Collaborated with a team of IT specialists on various client projects.',
-        desc2: 'Assisted in the development and maintenance of software solutions for external clients.',
-        desc3: 'Gained experience with team collaboration and project management in an IT environment.'
+        desc1: 'Collaborated effectively with a teammate to develop a Chrome extension, applying teamwork and communication skills.',
+        desc2: 'Applied problem-solving skills to identify user needs and create an efficient solution for LinkedIn data extraction.',
+        desc3: 'Gained experience in project management and adapting to technical challenges in a professional IT environment.'
       }
     },
     extracurricular: {
@@ -247,13 +248,13 @@ function HomePage() {
     setDarkTheme(themeName);
     localStorage.setItem('darkTheme', themeName);
     // Aplikovať tému aj v light mode
-    document.documentElement.setAttribute('data-theme', themeName);
+      document.documentElement.setAttribute('data-theme', themeName);
     setShowThemeMenu(false);
   };
 
   // Aktualizovať data-theme pri zmene darkTheme - vždy, aj v light mode
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', darkTheme);
+      document.documentElement.setAttribute('data-theme', darkTheme);
   }, [darkTheme, isDarkMode]);
 
   // Dynamicky meniť favicon podľa témy
@@ -290,7 +291,7 @@ function HomePage() {
     // Progress bar gradient
     progressGradient: () => {
       if (!isDarkMode) {
-        const gradients = {
+      const gradients = {
           green: 'bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500',
           orange: 'bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500',
           cyan: 'bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500'
@@ -307,7 +308,7 @@ function HomePage() {
     // Button gradient
     buttonGradient: () => {
       if (!isDarkMode) {
-        const gradients = {
+      const gradients = {
           green: 'bg-gradient-to-r from-emerald-600 to-teal-600',
           orange: 'bg-gradient-to-r from-orange-600 to-amber-600',
           cyan: 'bg-gradient-to-r from-cyan-600 to-blue-600'
@@ -324,7 +325,7 @@ function HomePage() {
     // Text color
     textColor: () => {
       if (!isDarkMode) {
-        const colors = {
+      const colors = {
           green: 'text-emerald-600',
           orange: 'text-orange-600',
           cyan: 'text-cyan-600'
@@ -341,7 +342,7 @@ function HomePage() {
     // Border color
     borderColor: () => {
       if (!isDarkMode) {
-        const colors = {
+      const colors = {
           green: 'border-emerald-600',
           orange: 'border-orange-600',
           cyan: 'border-cyan-600'
@@ -358,11 +359,11 @@ function HomePage() {
     // Shadow color
     shadowColor: () => {
       if (!isDarkMode) {
-        const shadows = {
-          green: 'hover:shadow-emerald-500/50',
-          orange: 'hover:shadow-orange-500/50',
-          cyan: 'hover:shadow-cyan-500/50'
-        };
+      const shadows = {
+        green: 'hover:shadow-emerald-500/50',
+        orange: 'hover:shadow-orange-500/50',
+        cyan: 'hover:shadow-cyan-500/50'
+      };
         return shadows[darkTheme] || shadows.cyan;
       }
       const shadows = {
@@ -375,7 +376,7 @@ function HomePage() {
     // Hover text color
     hoverTextColor: () => {
       if (!isDarkMode) {
-        const colors = {
+      const colors = {
           green: 'hover:text-emerald-600',
           orange: 'hover:text-orange-600',
           cyan: 'hover:text-cyan-600'
@@ -392,7 +393,7 @@ function HomePage() {
     // Badge background
     badgeBg: () => {
       if (!isDarkMode) {
-        const backgrounds = {
+      const backgrounds = {
           green: 'bg-emerald-100',
           orange: 'bg-orange-100',
           cyan: 'bg-cyan-100'
@@ -409,7 +410,7 @@ function HomePage() {
     // Badge text
     badgeText: () => {
       if (!isDarkMode) {
-        const colors = {
+      const colors = {
           green: 'text-emerald-700',
           orange: 'text-orange-700',
           cyan: 'text-cyan-700'
@@ -426,7 +427,7 @@ function HomePage() {
     // Badge border
     badgeBorder: () => {
       if (!isDarkMode) {
-        const borders = {
+      const borders = {
           green: 'border-emerald-200',
           orange: 'border-orange-200',
           cyan: 'border-cyan-200'
@@ -443,7 +444,7 @@ function HomePage() {
     // Card shadow
     cardShadow: () => {
       if (!isDarkMode) {
-        const shadows = {
+      const shadows = {
           green: 'shadow-emerald-500/20',
           orange: 'shadow-orange-500/20',
           cyan: 'shadow-cyan-500/20'
@@ -460,7 +461,7 @@ function HomePage() {
     // Card border
     cardBorder: () => {
       if (!isDarkMode) {
-        const borders = {
+      const borders = {
           green: 'border border-emerald-200',
           orange: 'border border-orange-200',
           cyan: 'border border-cyan-200'
@@ -494,7 +495,7 @@ function HomePage() {
     // Icon gradient
     iconGradient: () => {
       if (!isDarkMode) {
-        const gradients = {
+      const gradients = {
           green: 'bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-500',
           orange: 'bg-gradient-to-br from-orange-500 via-amber-500 to-orange-500',
           cyan: 'bg-gradient-to-br from-cyan-500 via-blue-500 to-cyan-500'
@@ -511,11 +512,11 @@ function HomePage() {
     // Icon shadow
     iconShadow: () => {
       if (!isDarkMode) {
-        const shadows = {
-          green: 'shadow-emerald-500/50',
-          orange: 'shadow-orange-500/50',
-          cyan: 'shadow-cyan-500/50'
-        };
+      const shadows = {
+        green: 'shadow-emerald-500/50',
+        orange: 'shadow-orange-500/50',
+        cyan: 'shadow-cyan-500/50'
+      };
         return shadows[darkTheme] || shadows.cyan;
       }
       const shadows = {
@@ -579,7 +580,7 @@ function HomePage() {
     // Percentage text color
     percentText: () => {
       if (!isDarkMode) {
-        const colors = {
+      const colors = {
           green: 'text-emerald-600',
           orange: 'text-orange-600',
           cyan: 'text-cyan-600'
@@ -761,7 +762,7 @@ function HomePage() {
                 <a href="#contact" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.contact}</a>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="relative theme-menu-container">
+                  <div className="relative theme-menu-container">
                     <button
                       onClick={() => setShowThemeMenu(!showThemeMenu)}
                       className="p-2 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
@@ -795,7 +796,7 @@ function HomePage() {
                         ))}
                       </div>
                     )}
-                </div>
+                  </div>
                 <button
                   onClick={toggleDarkMode}
                   className="p-2.5 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-yellow-300 [data-theme='green']:text-emerald-700 dark:[data-theme='green']:text-emerald-300 [data-theme='orange']:text-orange-700 dark:[data-theme='orange']:text-orange-300 [data-theme='cyan']:text-cyan-700 dark:[data-theme='cyan']:text-cyan-300 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300 shadow-md hover:shadow-lg [data-theme='green']:shadow-emerald-500/30 dark:[data-theme='green']:shadow-emerald-900/30 [data-theme='orange']:shadow-orange-500/30 dark:[data-theme='orange']:shadow-orange-900/30 [data-theme='cyan']:shadow-cyan-500/30 dark:[data-theme='cyan']:shadow-cyan-900/30"
@@ -869,7 +870,18 @@ function HomePage() {
               <p className="text-sm [data-theme='green']:text-emerald-200 dark:[data-theme='green']:text-emerald-300 [data-theme='orange']:text-orange-200 dark:[data-theme='orange']:text-orange-300 [data-theme='cyan']:text-cyan-200 dark:[data-theme='cyan']:text-cyan-300 mb-4">{t.about.years}</p>
               <div className="mt-4 pt-4 border-t border-white/20">
                 <h4 className="text-lg font-semibold mb-2">{t.about.language}</h4>
-                <p className="text-sm [data-theme='green']:text-emerald-100 dark:[data-theme='green']:text-emerald-200 [data-theme='orange']:text-orange-100 dark:[data-theme='orange']:text-orange-200 [data-theme='cyan']:text-cyan-100 dark:[data-theme='cyan']:text-cyan-200">{t.about.english}</p>
+                <p className="text-sm [data-theme='green']:text-emerald-100 dark:[data-theme='green']:text-emerald-200 [data-theme='orange']:text-orange-100 dark:[data-theme='orange']:text-orange-200 [data-theme='cyan']:text-cyan-100 dark:[data-theme='cyan']:text-cyan-200 mb-2">{t.about.slovak}</p>
+                <a 
+                  href="/cambridge-certificate.pdf" 
+                  download="Šimon Godarský CAE Certification.pdf"
+                  className="text-sm [data-theme='green']:text-emerald-100 dark:[data-theme='green']:text-emerald-200 [data-theme='orange']:text-orange-100 dark:[data-theme='orange']:text-orange-200 [data-theme='cyan']:text-cyan-100 dark:[data-theme='cyan']:text-cyan-200 hover:underline cursor-pointer inline-flex items-center gap-1"
+                  title="Stiahnuť certifikát"
+                >
+                  {t.about.english}
+                  <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
@@ -893,8 +905,8 @@ function HomePage() {
                   {skill}
                 </span>
               ))}
-            </div>
-          </div>
+                </div>
+                </div>
 
           {/* Soft Skills */}
           <div>
@@ -904,8 +916,8 @@ function HomePage() {
               <div key={idx} className={`bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md ${getThemeClasses.cardShadow()} card-hover ${getThemeClasses.cardBorder()}`}>
                   <h4 className="font-bold text-lg mb-2 text-gray-800 dark:text-slate-200">{skill.name}</h4>
                   <p className="text-gray-600 dark:text-slate-300 text-sm leading-relaxed">{skill.description.en}</p>
-                </div>
-              ))}
+              </div>
+            ))}
                 </div>
               </div>
         </div>
@@ -1092,8 +1104,8 @@ function HomePage() {
                   </svg>
                 </div>
                 <h3 className="font-semibold text-gray-800 dark:text-slate-200 mb-2">{t.contact.linkedin}</h3>
-                <a href="#" className={`${getThemeClasses.textColor()} ${getThemeClasses.hoverTextColor()} transition-colors`}>
-                  linkedin.com/in/tvoje-meno
+                <a href="https://www.linkedin.com/in/šimon-godarský-007889279" target="_blank" rel="noopener noreferrer" className={`${getThemeClasses.textColor()} ${getThemeClasses.hoverTextColor()} transition-colors`}>
+                  www.linkedin.com/in/šimon-godarský
                 </a>
               </div>
             </div>
