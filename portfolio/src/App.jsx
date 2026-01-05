@@ -749,10 +749,10 @@ function HomePage() {
           ? `bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg ${getThemeClasses.navBorder()}` 
           : 'bg-transparent'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link to="/" className="text-xl font-bold gradient-text hover:opacity-80 transition-opacity">Portfolio</Link>
-            <div className="flex items-center space-x-4">
+            <Link to="/" className="text-lg sm:text-xl font-bold gradient-text hover:opacity-80 transition-opacity">Portfolio</Link>
+            <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
               <div className="hidden md:flex space-x-6 lg:space-x-8">
                 <a href="#home" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.home}</a>
                 <a href="#about" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.about}</a>
@@ -765,11 +765,11 @@ function HomePage() {
                   <div className="relative theme-menu-container">
                     <button
                       onClick={() => setShowThemeMenu(!showThemeMenu)}
-                      className="p-2 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
+                      className="p-1.5 sm:p-2 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-slate-200 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300"
                       aria-label="Choose theme"
                       title="Vybrať farebnú tému"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                       </svg>
                     </button>
@@ -799,16 +799,16 @@ function HomePage() {
                   </div>
                 <button
                   onClick={toggleDarkMode}
-                  className="p-2.5 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-yellow-300 [data-theme='green']:text-emerald-700 dark:[data-theme='green']:text-emerald-300 [data-theme='orange']:text-orange-700 dark:[data-theme='orange']:text-orange-300 [data-theme='cyan']:text-cyan-700 dark:[data-theme='cyan']:text-cyan-300 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300 shadow-md hover:shadow-lg [data-theme='green']:shadow-emerald-500/30 dark:[data-theme='green']:shadow-emerald-900/30 [data-theme='orange']:shadow-orange-500/30 dark:[data-theme='orange']:shadow-orange-900/30 [data-theme='cyan']:shadow-cyan-500/30 dark:[data-theme='cyan']:shadow-cyan-900/30"
+                  className="p-1.5 sm:p-2.5 rounded-full bg-gray-200 dark:bg-slate-700 [data-theme='green']:bg-emerald-100 dark:[data-theme='green']:bg-emerald-900/50 [data-theme='orange']:bg-orange-100 dark:[data-theme='orange']:bg-orange-900/50 [data-theme='cyan']:bg-cyan-100 dark:[data-theme='cyan']:bg-cyan-900/50 text-gray-800 dark:text-yellow-300 [data-theme='green']:text-emerald-700 dark:[data-theme='green']:text-emerald-300 [data-theme='orange']:text-orange-700 dark:[data-theme='orange']:text-orange-300 [data-theme='cyan']:text-cyan-700 dark:[data-theme='cyan']:text-cyan-300 hover:bg-gray-300 dark:hover:bg-slate-600 [data-theme='green']:hover:bg-emerald-200 dark:[data-theme='green']:hover:bg-emerald-800/60 [data-theme='orange']:hover:bg-orange-200 dark:[data-theme='orange']:hover:bg-orange-800/60 [data-theme='cyan']:hover:bg-cyan-200 dark:[data-theme='cyan']:hover:bg-cyan-800/60 transition-all duration-300 shadow-md hover:shadow-lg [data-theme='green']:shadow-emerald-500/30 dark:[data-theme='green']:shadow-emerald-900/30 [data-theme='orange']:shadow-orange-500/30 dark:[data-theme='orange']:shadow-orange-900/30 [data-theme='cyan']:shadow-cyan-500/30 dark:[data-theme='cyan']:shadow-cyan-900/30"
                   aria-label="Toggle dark mode"
                   title={isDarkMode ? "Vypnúť dark mode" : "Zapnúť dark mode"}
                 >
                   {isDarkMode ? (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                   ) : (
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
                   )}
@@ -927,7 +927,7 @@ function HomePage() {
       <section id="experience" className="min-h-screen flex items-center justify-center py-8 md:py-10 px-4 sm:px-6 lg:px-8">
         <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('experience') ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 md:mb-12 gradient-text">{t.experience.title}</h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Slido */}
             <div className={`bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl ${getThemeClasses.cardShadow()} ${getThemeClasses.cardBorder()}`}>
               <div className="mb-4">
