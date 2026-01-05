@@ -65,6 +65,7 @@
     padding: 0;
     min-height: 100vh;
     position: relative;
+    overflow-x: hidden;
     /* Hide scrollbar but keep scrolling */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */

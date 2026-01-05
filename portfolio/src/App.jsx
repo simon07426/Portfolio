@@ -924,7 +924,7 @@ function HomePage() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="min-h-screen flex items-center justify-center py-8 md:py-10 px-4 sm:px-6 lg:px-8">
+      <section id="experience" className="min-h-screen flex items-center justify-center py-8 md:py-10 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
         <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('experience') ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 md:mb-12 gradient-text">{t.experience.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -991,7 +991,7 @@ function HomePage() {
             </div>
 
             {/* Extracurricular Activities - Subsection */}
-            <div className="mt-12 md:mt-16 col-span-2">
+            <div className="mt-12 md:mt-16 col-span-1 md:col-span-2">
               <h3 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-10 text-gray-800 dark:text-slate-200">{t.extracurricular.title}</h3>
               <div className={`bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-10 shadow-xl ${getThemeClasses.cardShadow()} ${getThemeClasses.cardBorder()}`}>
                 <h4 className="text-2xl font-bold mb-4 text-gray-800 dark:text-slate-200">{t.extracurricular.swimming}</h4>
