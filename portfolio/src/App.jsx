@@ -66,6 +66,7 @@ const translations = {
       skills: 'Skills',
       experience: 'Experience',
       projects: 'Projects',
+      references: 'References',
       contact: 'Contact'
     },
     hero: {
@@ -144,6 +145,11 @@ const translations = {
         gitlabRepo: 'GitLab Repository'
       }
     },
+    references: {
+      title: 'References',
+      description: 'What people say about me',
+      downloadLetter: 'Download letter of recommendation'
+    },
     contact: {
       title: 'Contact',
       description: 'Feel free to contact me for collaboration or questions',
@@ -159,6 +165,24 @@ const translations = {
 
 // Export translations for use in other components
 export { translations };
+
+// References data
+const references = [
+  {
+    name: 'Fraser Coyle',
+    position: 'Business English Teacher',
+    company: 'Lýceum C. S. Lewisa',
+    text: 'Lyceum is a school with a strong emphasis on project-based learning and real world experience. Within this environment, Simon has consistently proven himself to be a reliable and valued team member. While he often works independently to ensure high quality outcomes, he also collaborates effectively, respects diverse perspectives and contributes meaningfully to group projects.',
+    pdf: '/reference-coyle.pdf'
+  },
+  {
+    name: 'Milina Matulová',
+    position: 'Head of Entrepreneurship Program',
+    company: 'Lýceum C. S. Lewisa',
+    text: 'Simon\'s strongest areas are mathematics, programming, and machine learning, where he combines solid technical knowledge with curiosity and persistence. He approaches challenges with a clear, analytical mindset and always strives to understand problems in depth rather than settle for surface solutions.',
+    pdf: '/reference-matulova.pdf'
+  }
+];
 
 const darkThemes = {
   green: {
@@ -759,6 +783,7 @@ function HomePage() {
                 <a href="#skills" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.skills}</a>
                 <a href="#experience" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.experience}</a>
                 <a href="#projects" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.projects}</a>
+                <a href="#references" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.references}</a>
                 <a href="#contact" className={`text-gray-700 dark:text-slate-200 ${getThemeClasses.hoverTextColor()} transition-colors font-medium`}>{t.nav.contact}</a>
               </div>
               <div className="flex items-center space-x-2">
@@ -1073,6 +1098,30 @@ function HomePage() {
             </div>
           ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* References Section */}
+      <section id="references" className="min-h-screen flex items-center justify-center py-8 md:py-10 px-4 sm:px-6 lg:px-8">
+        <div className={`max-w-6xl mx-auto w-full section-animate ${visibleSections.has('references') ? 'visible' : ''}`}>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-4 md:mb-5 gradient-text">{t.references.title}</h2>
+          <p className="text-center text-gray-600 dark:text-slate-300 mb-10 md:mb-12 text-lg md:text-xl">
+            {t.references.description}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {references.map((reference, idx) => (
+              <div key={idx} className={`bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl ${getThemeClasses.cardShadow()} ${getThemeClasses.cardBorder()}`}>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-slate-200">{reference.name}</h3>
+                  <p className="text-gray-600 dark:text-slate-400 mb-1">{reference.position}</p>
+                  <p className={`text-sm ${getThemeClasses.textColor()}`}>{reference.company}</p>
+                </div>
+                <div>
+                  <p className="text-gray-700 dark:text-slate-300 leading-relaxed italic">"{reference.text}"</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
